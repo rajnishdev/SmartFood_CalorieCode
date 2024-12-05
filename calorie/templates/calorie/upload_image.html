@@ -1,0 +1,95 @@
+{% extends 'calorie/base.html' %}
+{% block content %}
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+  }
+
+  .card {
+    border: none;
+    border-radius: 15px;
+    color: white;
+    background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+    filter: brightness(1.1);
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.15), transparent 70%);
+    animation: subtleBackgroundAnim 8s infinite linear;
+    z-index: 1;
+  }
+
+  @keyframes subtleBackgroundAnim {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .card-body {
+    position: relative;
+    z-index: 2;
+    padding: 20px;
+  }
+
+  .card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  .btn {
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-weight: bold;
+  }
+
+  .btn-primary {
+    background-color: #ffffff;
+    color: #0056d6;
+    border: none;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    background-color: #0056d6;
+    color: white;
+  }
+</style>
+
+<div class="container-fluid mt-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title text-center">Upload Image</h5>
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+              {{ form.as_p }}
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Upload</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

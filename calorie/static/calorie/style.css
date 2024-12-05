@@ -1,0 +1,103 @@
+body {
+    background: url('/static/assets/images/homee.jpg') no-repeat center center fixed; /* Ensure the image is fixed */
+    background-size: cover;  /* Cover the entire viewport */
+    height: 100vh;  /* Ensure the body takes up the full viewport height */
+    flex-direction: column;  /* Make the body act as a column container */
+    justify-content: space-between;  /* Ensure content is spread out */
+}
+.sidenav {
+    height: 100%; /* Full height */
+    width: 0; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    top: 0;
+    left: 0;
+    background-color: #111; /* Black background */
+    overflow-x: hidden; /* Disable horizontal scroll */
+    transition: 0.3s; /* Smooth opening effect */
+    padding-top: 60px; /* Add padding for content */
+}
+
+/* Links inside the sidebar */
+.sidenav a {
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+    display: block;
+    transition: 0.3s;
+}
+.sidenav a:hover {
+    background-color: #575757;
+}
+
+/* Close button styling */
+.sidenav .closebtn {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 25px;
+    color: white;
+    text-decoration: none;
+}
+.open-btn {
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+}
+
+.open-btn:hover {
+    background-color: #111;
+}
+
+.homepage-description {
+    font-size: 1.2rem;
+    color: #7f8c8d;
+    margin: 10px 0 20px;
+}
+.dashboard {
+    background-color: #fff;
+    text-align: center;
+    width: 800px;
+    border-radius: 10px;
+}
+
+.homepage-title {
+    color: #007bff;
+    font-weight: bold;
+    margin-bottom: 15px;
+    margin-top:7px;
+}
+.homepage-description {
+    font-size: 18px;
+    color: #555;
+}
+
+.upload-section p {
+    font-size: 16px;
+    color: #333;
+}
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+.goal-section {
+    text-align: left;
+    margin-top: 20px;
+}
+
+.goal-section h3 {
+    font-size: 24px;
+    color: #007bff;
+}
+
+.goal-section label {
+    font-weight: bold;
+    color: #555;
+}
+.goal-section .form-control {
+    max-width: 400px;
+    margin: 0 auto;
+}

@@ -1,0 +1,41 @@
+{% extends 'user/base.html' %}
+{% block content %}
+{% load crispy_forms_tags %}
+{% load static %}
+<style>
+    body {
+        background: url("{% static 'assets/images/register.jpg' %}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+</style>
+
+<!-- Top Heading: Smart Food Diary -->
+<div class="header-container mt-5">
+    <h1 class="header-title">Smart Food Diary</h1>
+</div>
+
+<!-- Login Section -->
+<div class="login-container">
+    <h2 class="login-heading">Welcome Back! <br> Log in to your account</h2>
+
+    <form method="POST" class="login-form">
+        {% if messages %}
+        <div class="alert-container">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" role="alert">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% csrf_token %}
+        {{form|crispy}}
+        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+    </form>
+    <h6 class="mt-4 text-center">
+        Don't have an account? <a href="{% url 'register' %}" class="signup-link">Register</a>
+    </h6>
+</div>
+{% endblock %}

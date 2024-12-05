@@ -1,0 +1,154 @@
+{% extends 'calorie/base.html' %}
+{% block content %}
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+  }
+
+  /* Dashboard Row */
+  .dashboard-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .dashboard-row .col {
+    flex: 1;
+    min-width: 300px;
+  }
+
+  /* Card Style */
+  .card {
+    border: none;
+    border-radius: 15px;
+    height: 100%; /* Ensure uniform height */
+    color: white;
+    background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Scale and Shadow Effect on Hover */
+  .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+    filter: brightness(1.1);
+  }
+
+  /* Subtle Background Effect */
+  .card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.15), transparent 70%);
+  }
+
+  .card .card-body {
+    position: relative;
+    z-index: 2;
+    padding: 20px;
+  }
+
+  .card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  /* Buttons */
+  .btn {
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-weight: bold;
+  }
+
+  .btn-primary {
+    background-color: #ffffff;
+    color: #0056d6;
+    border: none;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    background-color: #0056d6;
+    color: white;
+  }
+
+  .btn-success {
+    background-color: #ffffff;
+    color: #28a745;
+    border: none;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  .btn-success:hover {
+    background-color: #28a745;
+    color: white;
+  }
+
+  /* Chart Placeholder */
+  .chart-placeholder {
+    height: 150px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    text-transform: uppercase;
+    color: white;
+  }
+</style>
+
+<div class="container-fluid mt-3">
+  <div class="dashboard-row">
+    <!-- Recent Activity -->
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title text-center">Recent Activity</h5>
+          <ul class="list-group">
+            <li class="list-group-item">Uploaded: Salad Image</li>
+            <li class="list-group-item">Calories Consumed: 450 kcal</li>
+            <li class="list-group-item">Updated Goals</li>
+          </ul>
+          <a href="#activity" class="btn btn-success w-100 mt-3">View All</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Daily Goals -->
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title text-center">Daily Goals</h5>
+          <p>Calories: <strong>{{ data.calories }}</strong></p>
+          <p>Protein: <strong>{{ data.protein }}</strong>, Carbs: <strong>{{ data.carbs }}</strong>, Fats: <strong>{{ data.fats }}</strong></p>
+          <a href="{% url 'edit_daily_goals' %}" class="btn btn-primary w-100" style="margin-top: 60px;">Edit Goals</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Second Row -->
+  <div class="dashboard-row mt-5">
+    <!-- Nutrition Overview -->
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title text-center">Nutrition Overview</h5>
+          <div class="chart-placeholder">
+            Chart Placeholder
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
