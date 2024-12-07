@@ -254,7 +254,7 @@ body {
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
 }
 .btn-login {
-    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    background: linear-gradient(140deg, #6a11cb, #2b78fd);
     color: #fff;
 }
 
@@ -263,7 +263,7 @@ body {
 }
 
 .btn-register {
-     background: linear-gradient(135deg, #0b670c, #27e63e);
+     background: linear-gradient(140deg, #0b670c, #27e63e);
     color: #fff;
 }
 .btn-register:hover {
@@ -271,7 +271,7 @@ body {
 }
 
 .btn-about {
-     background: linear-gradient(135deg, #d91d68, #535353);
+     background: linear-gradient(140deg, #d91d68, #535353);
     color: #fff;
 }
 
@@ -288,12 +288,6 @@ body {
 .btn-learn:hover {
     background: #e0a800;
 }
-p {
-    color: #741212;
-    font-family: 'Courier New', Courier, monospace;
-    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
-}
-
 .welcome-box{
     width: 1000px;
     height: 500px;
@@ -401,6 +395,106 @@ p {
     margin-left: 10px;
     margin-right: 10px;
 }
-.site-name {
-    color: #cf0505;
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animated-heading {
+    font-size: 3.7rem;
+    font-weight: bold;
+    font-family: 'Times New Roman', serif;
+    margin-top: -20px;
+    color: #f70606;
+    text-shadow: 2px 2px 8px rgba(3, 1, 1, 0.3);
+    animation: fadeInUp 1s ease-in-out;
+    display: inline-block; /* Ensures the animation applies properly */
+    position: relative;
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+}
+
+.animated-heading .site-name::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 0;
+    height: 4px;
+    background-color: #30cfd0;
+}
+
+.animated-heading:hover {
+    color: #ed0f0f; /* Change the text color on hover */
+    text-shadow: 3px 3px 12px rgba(240, 219, 30, 0.7); /* Enhance the shadow effect */
+    transform: scale(1.05); /* Slightly enlarge the heading */
+}
+
+.contact-details {
+    font-weight: bold;
+    background-color: rgba(0, 0, 0, 0.07);
+    border-radius: 15px;
+    padding: 7px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    font-family: 'Courier New', Courier, monospace;
+    color: #333;
+    text-align: left;
+    max-width: 500px;
+    margin: -1px auto;
+    margin-bottom: -10px;
+}
+.contact-heading {
+    font-size: 1.8rem;
+    color: #741212;
+    text-shadow: 1px 1px 10px rgba(116, 18, 18, 0.5);
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
+    margin-left: 37px;
+}
+.contact-item:hover {
+    transform: translateX(10px);
+}
+
+.contact-item i {
+    color: #741212;
+    font-size: 1.5rem;
+    margin-right: 10px;
+}
+
+.contact-item p {
+    color: #333;
+    margin: 0;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+.contact-item p a {
+    text-decoration: none;
+    color: #741212;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.contact-item p a:hover {
+    color: #30cfd0;
+    text-decoration: underline;
+}
+/* div in the front page */
+.hover-div {
+    transition: all 0.3s ease; /* Smooth transition */
+}
+.hover-div:hover {
+    transform: scale(1.01); /* Scales the div slightly */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Adds a shadow */
 }

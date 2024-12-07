@@ -6,98 +6,186 @@ body {
     justify-content: space-between;  /* Ensure content is spread out */
 }
 .sidenav {
-    height: 100%; /* Full height */
-    width: 0; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    top: 0;
-    left: 0;
-    background-color: #111; /* Black background */
-    overflow-x: hidden; /* Disable horizontal scroll */
-    transition: 0.3s; /* Smooth opening effect */
-    padding-top: 60px; /* Add padding for content */
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #343a40;
+  color: white;
+  overflow-x: hidden;
+  transition: 0.3s;
+  padding-top: 20px;
 }
 
-/* Links inside the sidebar */
 .sidenav a {
-    padding: 10px 15px;
-    text-decoration: none;
-    font-size: 20px;
-    color: white;
-    display: block;
-    transition: 0.3s;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: white;
+  display: block;
+  font-size: 18px;
 }
+
 .sidenav a:hover {
-    background-color: #575757;
+  background-color: #575d63;
 }
 
-/* Close button styling */
-.sidenav .closebtn {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    font-size: 25px;
-    color: white;
-    text-decoration: none;
-}
-.open-btn {
-    font-size: 20px;
-    cursor: pointer;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 15px;
+.content {
+  transition: margin-left 0.3s;
+  padding: 20px;
 }
 
-.open-btn:hover {
-    background-color: #111;
+.sidenav.open {
+  width: 250px;
 }
 
-.homepage-description {
-    font-size: 1.2rem;
-    color: #7f8c8d;
-    margin: 10px 0 20px;
+.content.shift {
+  margin-left: 250px;
 }
-.dashboard {
-    background-color: #fff;
-    text-align: center;
-    width: 800px;
-    border-radius: 10px;
+/* Styling for the menu button */
+#toggle-btn {
+  background-color: #343a40;
+  color: white;
+  border: none;
+  padding: 11px 18px;
+  font-size: 24px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+}
+/* Hover and animation effects for the menu button */
+#toggle-btn:hover {
+  background-color: #495057;
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+/* Active state with a slight bounce animation */
+#toggle-btn:active {
+  transform: scale(0.95);
+  animation: bounce 0.2s ease forwards;
 }
 
-.homepage-title {
-    color: #007bff;
-    font-weight: bold;
-    margin-bottom: 15px;
-    margin-top:7px;
+@keyframes bounce {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
-.homepage-description {
-    font-size: 18px;
-    color: #555;
+/* General Styles */
+body {
+  font-family: 'Arial', sans-serif;
 }
 
-.upload-section p {
-    font-size: 16px;
-    color: #333;
+.card {
+  border: none;
+  border-radius: 15px;
+  color: white;
+  background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  filter: brightness(1.1);
+}
+
+/* Subtle Background Effect */
+.card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.15), transparent 70%);
+  animation: subtleBackgroundAnim 8s infinite linear;
+  z-index: 1;
+}
+
+@keyframes subtleBackgroundAnim {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.card-body {
+  position: relative;
+  z-index: 2;
+  padding: 20px;
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Dashboard Row */
+.dashboard-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: -25px;
+}
+
+.dashboard-row .col {
+  flex: 1;
+  min-width: 300px;
+}
+
+/* Buttons */
+.btn {
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-weight: bold;
+}
+
+.btn-primary {
+  background-color: #ffffff;
+  color: #0056d6;
+  border: none;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
 .btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #004085;
-}
-.goal-section {
-    text-align: left;
-    margin-top: 20px;
+  background-color: #0056d6;
+  color: white;
 }
 
-.goal-section h3 {
-    font-size: 24px;
-    color: #007bff;
+.btn-success {
+  background-color: #ffffff;
+  color: #28a745;
+  border: none;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
-.goal-section label {
-    font-weight: bold;
-    color: #555;
+.btn-success:hover {
+  background-color: #28a745;
+  color: white;
 }
-.goal-section .form-control {
-    max-width: 400px;
-    margin: 0 auto;
+
+/* Chart Placeholder */
+.chart-placeholder {
+  height: 150px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+  text-transform: uppercase;
+  color: white;
 }

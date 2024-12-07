@@ -1,141 +1,23 @@
 {% extends 'calorie/base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
-<style>
-  body {
-    font-family: 'Arial', sans-serif;
-  }
-
-  /* Dashboard Row */
-  .dashboard-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-
-  .dashboard-row .col {
-    flex: 1;
-    min-width: 300px;
-  }
-
-  /* Card Style */
-  .card {
-    border: none;
-    border-radius: 15px;
-    height: 100%; /* Ensure uniform height */
-    color: white;
-    background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);
-    overflow: hidden;
-    position: relative;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  }
-
-  /* Scale and Shadow Effect on Hover */
-  .card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
-    filter: brightness(1.1);
-  }
-
-  /* Subtle Background Effect */
-  .card::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.15), transparent 70%);
-    animation: subtleBackgroundAnim 8s infinite linear;
-    z-index: 1;
-  }
-
-  @keyframes subtleBackgroundAnim {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  .card .card-body {
-    position: relative;
-    z-index: 2;
-    padding: 20px;
-  }
-
-  .card-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-
-  /* Buttons */
-  .btn {
-    border-radius: 5px;
-    padding: 10px 20px;
-    font-weight: bold;
-  }
-
-  .btn-primary {
-    background-color: #ffffff;
-    color: #0056d6;
-    border: none;
-    transition: background 0.3s ease, color 0.3s ease;
-  }
-
-  .btn-primary:hover {
-    background-color: #0056d6;
-    color: white;
-  }
-
-  .btn-success {
-
-    color: #ffffff;
-    border: none;
-    transition: background 0.3s ease, color 0.3s ease;
-  }
-
-  .btn-success:hover {
-    background-color: #28a745;
-    color: white;
-  }
-
-  /* Chart Placeholder */
-  .chart-placeholder {
-    height: 150px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1rem;
-    text-transform: uppercase;
-    color: white;
-  }
-</style>
-
-<div class="container-fluid mt-5" style="width: 800px;">
-  <div class="dashboard-row">
-    <!-- Daily Goals -->
-    <div class="col">
+<div class="container-fluid mt-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
       <div class="card">
         <div class="card-body">
           <h5 class="card-title text-center">Edit Your Daily Goals</h5>
           <form method="POST">
             {% csrf_token %}
             {{form|crispy}}
-          <div class="d-flex justify-content-between mt-4">
-            <a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
-            <button type="submit" class="btn btn-success">Save Goals</button>
-          </div>
+            <div class="d-flex justify-content-between mt-4">
+              <a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
+              <button type="submit" class="btn btn-success">Save Goals</button>
+            </div>
           </form>
-          
-        </div>
         </div>
       </div>
     </div>
+  </div>
 </div>
 {% endblock %}
