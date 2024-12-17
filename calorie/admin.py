@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import DailyGoal, Image
+from .models import DailyGoal, Image, NutritionData
 
 @admin.register(DailyGoal)
 class DailyGoalAdmin(admin.ModelAdmin):
@@ -8,3 +8,4 @@ class DailyGoalAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Image)
+admin.site.register(NutritionData)

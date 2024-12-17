@@ -1,16 +1,21 @@
 from django.shortcuts import render, redirect
 from django.urls import path
 from django.contrib.auth.decorators import login_required
-from .models import DailyGoal, Image
+from .models import DailyGoal, Image, NutritionData
 from .forms import DailyGoalForm, ImageUploadForm
 from django.shortcuts import get_object_or_404
-
+from transformers import ViTImageProcessor, ViTForImageClassification
+from PIL import Image as PilImage
+from . import utils
 # Create your views here.
+
 @login_required
 def home(request):
-    data = DailyGoal.objects.filter(user = request.user).first()
+    daily_goal = DailyGoal.objects.filter(user = request.user).first()
+    data = NutritionData.objects.first()
     context = {
-        'data': data
+        'daily_goal': daily_goal,
+        "data": data
     }
     return render(request,'calorie/home.html', context)
 
@@ -48,10 +53,35 @@ def upload_image(request):
             image_instance.user = request.user
             image_instance.save()
 
-            # Make prediction here (pre-process the image and make prediction with your model)
+            image_file = image_instance.image
+            image_path = image_file.path
+            pil_image = PilImage.open(image_path)
 
-            return redirect('home')  # Replace with your desired success URL
+            # Make prediction here (pre-process the image and make prediction with your model)
+            processor = ViTImageProcessor.from_pretrained('google/vit-base-patch16-224')
+            model = ViTForImageClassification.from_pretrained('google/vit-base-patch16-224')
+
+            inputs = processor(images=pil_image, return_tensors="pt")
+            outputs = model(**inputs)
+            logits = outputs.logits
+            predicted_class_idx = logits.argmax(-1).item()
+            class_name = model.config.id2label[predicted_class_idx]
+
+            nutrition_data = utils.fetch_nutrition(f"{len(class_name)} {class_name}")
+            calories = nutrition_data["calories"]
+            protein = nutrition_data["protein"]
+            carbs = nutrition_data["carbs"]
+            fats = nutrition_data["fats"]
+
+            NutritionData.objects.create(user=request.user, image=image_instance, class_name=class_name, calories=calories, protein=protein, carbs=carbs, fats=fats)
+            return redirect('meal_detail')
     else:
         form = ImageUploadForm()
 
     return render(request, 'calorie/upload_image.html', {'form': form})
+
+
+
+def meal_detail(request):
+    data = NutritionData.objects.first()
+    return render(request, "calorie/meal_detail.html", {"data": data})

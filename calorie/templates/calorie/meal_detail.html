@@ -1,0 +1,17 @@
+{% extends 'calorie/base.html' %}
+{% block content %}
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title text-center">{{ data.class_name }} nutrition data</h5>
+            <ul class="list-group">
+                <li class="list-group-item"><strong>Calories:</strong> {{ data.calories }} kcal</li>
+                <li class="list-group-item"><strong>Protein:</strong> {{ data.protein }} g</li>
+                <li class="list-group-item"><strong>Carbohydrates:</strong> {{ data.carbs }} g</li>
+                <li class="list-group-item"><strong>Fats:</strong> {{ data.fats }} g</li>
+            </ul>
+            <a href="{% url 'home' %}" class="btn btn-success w-100 mt-3">Back to Dashboard</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

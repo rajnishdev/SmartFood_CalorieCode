@@ -13,10 +13,27 @@ class DailyGoal(models.Model):
         return f"{self.user.username}'s Daily Goal"
 
 
+
+
 class Image(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='uploaded_images')
 
     def __str__(self):
         return self.image.name
+
+
+
+class NutritionData(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    image = models.ForeignKey(Image, on_delete=models.CASCADE)
+    class_name = models.CharField(max_length=100)
+    calories = models.PositiveIntegerField(default=0)
+    protein = models.PositiveIntegerField(default=0)
+    carbs = models.PositiveIntegerField(default=0)
+    fats = models.PositiveIntegerField(default=0)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.class_name} nutrition"
 

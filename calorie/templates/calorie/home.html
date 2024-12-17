@@ -8,9 +8,8 @@
         <div class="card-body">
           <h5 class="card-title text-center">Recent Activity</h5>
           <ul class="list-group">
-            <li class="list-group-item">Uploaded: Salad Image</li>
-            <li class="list-group-item">Calories Consumed: 450 kcal</li>
-            <li class="list-group-item">Updated Goals</li>
+            <li class="list-group-item">Uploaded: {{ data.class_name }}</li>
+            <li class="list-group-item">Calories Consumed: {{data.calories}} kcal</li>
           </ul>
           <a href="#activity" class="btn btn-success w-100 mt-3">View All</a>
         </div>
@@ -22,8 +21,8 @@
       <div class="card">
         <div class="card-body">
           <h5 class="card-title text-center">Daily Goals</h5>
-          <p>Calories: <strong>{{ data.calories }}</strong></p>
-          <p>Protein: <strong>{{ data.protein }}</strong>, Carbs: <strong>{{ data.carbs }}</strong>, Fats: <strong>{{ data.fats }}</strong></p>
+          <p>Calories: <strong>{{ daily_goal.calories }}</strong></p>
+          <p>Protein: <strong>{{ daily_goal.protein }}</strong>, Carbs: <strong>{{ daily_goal.carbs }}</strong>, Fats: <strong>{{ daily_goal.fats }}</strong></p>
           <a href="{% url 'edit_daily_goals' %}" class="btn btn-primary w-100" style="margin-top: 60px;">Edit Goals</a>
         </div>
       </div>
