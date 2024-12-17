@@ -10,5 +10,6 @@ urlpatterns = [
     path('about/', views.about_view, name='about'),
     path('learn-more/', views.learn_more_view, name='learn_more'),
     path('contact/', views.contact_view, name='contact'),
+    path('verify-email/<uidb64>/<token>/', views.verify_email, name='verify-email')
 
 ]
