@@ -83,5 +83,5 @@ def upload_image(request):
 
 
 def meal_detail(request):
-    data = NutritionData.objects.first()
+    data = NutritionData.objects.last()
     return render(request, "calorie/meal_detail.html", {"data": data})
