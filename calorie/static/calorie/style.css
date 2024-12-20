@@ -134,7 +134,9 @@ body {
   font-weight: bold;
   margin-bottom: 20px;
 }
-
+.container{
+  width: 63%;
+}
 /* Dashboard Row */
 .dashboard-row {
   display: flex;
@@ -146,8 +148,12 @@ body {
 .dashboard-row .col {
   flex: 1;
   min-width: 300px;
+  display: flex;
+  flex-direction: column;
 }
-
+.card {
+    flex-grow: 1; /* Ensures cards stretch to the same height */
+}
 /* Buttons */
 .btn {
   border-radius: 5px;
@@ -190,4 +196,8 @@ body {
   font-size: 1rem;
   text-transform: uppercase;
   color: white;
+}
+
+.list-group{
+  text-align: center;
 }

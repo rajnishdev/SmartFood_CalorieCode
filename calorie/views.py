@@ -1,3 +1,5 @@
+import torch
+
 from django.shortcuts import render, redirect
 from django.urls import path
 from django.contrib.auth.decorators import login_required
@@ -12,7 +14,7 @@ from . import utils
 @login_required
 def home(request):
     daily_goal = DailyGoal.objects.filter(user = request.user).first()
-    data = NutritionData.objects.first()
+    data = NutritionData.objects.last()
     context = {
         'daily_goal': daily_goal,
         "data": data
@@ -72,8 +74,17 @@ def upload_image(request):
             protein = nutrition_data["protein"]
             carbs = nutrition_data["carbs"]
             fats = nutrition_data["fats"]
+            cholestrol = nutrition_data["cholestrol"]
+            iron = nutrition_data["iron"]
+            calcium = nutrition_data["calcium"]
+            sodium = nutrition_data["sodium"]
+            magnesium = nutrition_data["magnesium"]
+            phosphorus = nutrition_data["phosphorus"]
+            zinc = nutrition_data["zinc"]
+            vitaminb12 = nutrition_data["vitaminb12"]
+            folic_acid = nutrition_data["folic_acid"]
 
-            NutritionData.objects.create(user=request.user, image=image_instance, class_name=class_name, calories=calories, protein=protein, carbs=carbs, fats=fats)
+            NutritionData.objects.create(user=request.user, image=image_instance, class_name=class_name, calories=calories, protein=protein, carbs=carbs, fats=fats,cholestrol=cholestrol, iron=iron, calcium=calcium, sodium=sodium, magnesium=magnesium, phosphorus=phosphorus,zinc=zinc,vitaminb12=vitaminb12, folic_acid=folic_acid )
             return redirect('meal_detail')
     else:
         form = ImageUploadForm()

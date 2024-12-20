@@ -32,6 +32,15 @@ class NutritionData(models.Model):
     protein = models.PositiveIntegerField(default=0)
     carbs = models.PositiveIntegerField(default=0)
     fats = models.PositiveIntegerField(default=0)
+    cholestrol = models.PositiveIntegerField(default=0)
+    iron = models.PositiveIntegerField(default=0)
+    calcium = models.PositiveIntegerField(default=0)
+    sodium = models.PositiveIntegerField(default=0)
+    magnesium = models.PositiveIntegerField(default=0)
+    phosphorus = models.PositiveIntegerField(default=0)
+    zinc = models.PositiveIntegerField(default=0)
+    vitaminb12 = models.PositiveIntegerField(default=0)
+    folic_acid = models.PositiveIntegerField(default=0)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
