@@ -30,7 +30,7 @@ def verify_email(request, uidb64, token):
         return HttpResponse('Invalid verification link.')
 
 
-def register(request):
+def signup(request):
     if request.method == "POST":
         form = forms.RegistrationForm(request.POST)
         if form.is_valid():
@@ -52,21 +52,10 @@ def register(request):
 
 
 def signout(request):
+    messages.success(request, "You have been successfully logged out!")
     logout(request)
-    return render(request,'user/signout.html')
+    return render(request,'user/landing.html')
 
 
-def options_view(request):
-    return render(request, 'user/options.html')
-
-
-def about_view(request):
-    return render(request, 'user/about.html')
-
-
-def learn_more_view(request):
-    return render(request, 'user/learn_more.html')
-
-
-def contact_view(request):
-    return render(request, 'user/contact.html')
+def landing(request):
+    return render(request, 'user/landing.html')

@@ -1,0 +1,56 @@
+{% extends 'user/base.html' %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+<style>
+    body {
+        background: url("{% static 'assets/images/options.webp' %}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+</style>
+
+<div class="container text-center d-flex flex-column justify-content-center align-items-center vh-100">
+    <div class="welcome-box">
+        <h1 class="animated-heading">
+            <span class="site-name">Welcome to Smart Food Diary</span>
+        </h1>
+        <div class="hover-div" style="border: outset; width: 600px; padding: 10px; margin-left: 200px;">
+        <p class="mb-4" style="font-weight: bold;">Track your calories and nutrients effortlessly.</p>
+
+        <div class="d-flex justify-content-center mb-3">
+            <a href="{% url 'login' %}" class="btn btn-custom btn-login btn-sm mx-2">Login</a>
+            <a href="{% url 'register' %}" class="btn btn-custom btn-register mx-2">Register</a>
+        </div>
+
+        <div class="d-flex justify-content-center mb-3">
+            <a href="{% url 'about' %}" class="btn btn-custom btn-about">About</a>
+        </div>
+        <div class="contact-details">
+            <h4 class="contact-heading">Contact Us</h4>
+            <div class="contact-item">
+                <i class="fas fa-envelope"></i>
+                <p>Email: <a href="mailto:support@smartfooddiary.com">support@smartfooddiary.com</a></p>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-phone-alt"></i>
+                <p>Phone: <a href="tel:+18005551234">+1-800-555-1234</a></p>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <p>Address: 123 Healthy Lane, Wellness City, FitLand</p>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <a href="{% url 'learn_more' %}" class="btn btn-custom btn-learn">Learn More</a>
+        </div>
+        </div>
+        
+    </div>
+</div>
+
+{% endblock content %}
