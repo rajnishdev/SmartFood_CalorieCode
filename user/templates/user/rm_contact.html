@@ -1,0 +1,48 @@
+{% extends 'user/base.html' %}
+
+{% block content %}
+{% load static %}
+<!-- Header Section with Background Image -->
+<header class="header-section" style="background-image: url({% static 'assets/images/contact.jpg' %});">
+    <div class="overlay">
+        <div class="container text-center text-white">
+            <h1 class="display-4 fw-bold">Contact Us</h1>
+            <p class="lead">We'd love to hear from you! Feel free to reach out with any questions, feedback, or support requests.</p>
+        </div>
+    </div>
+</header>
+<!-- Content Section for Contact Details and Social Media -->
+<div class="container mt-5">
+    <div class="row">
+        <!-- Contact Information Box -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-lg border-0 p-4">
+                <h3 class="card-title fw-bold mb-3">Our Contact Details</h3>
+                <ul class="list-unstyled">
+                    <li><strong>Email:</strong> support@smartfooddiary.com</li>
+                    <li><strong>Phone:</strong> +1-800-555-1234</li>
+                    <li><strong>Address:</strong> 123 Healthy Lane, Wellness City, FitLand</li>
+                    <li><strong>Support Hours:</strong> Mon-Fri, 9 AM - 6 PM (GMT)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Social Media Box -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-lg border-0 p-4 text-center">
+                <h4 class="card-title fw-bold mb-3">Follow Us</h4>
+                <a href="https://facebook.com/smartfooddiary" target="_blank" class="btn btn-outline-primary mx-2">
+                    <i class="fab fa-facebook"></i> Facebook
+                </a>
+                <a href="https://twitter.com/smartfooddiary" target="_blank" class="btn btn-outline-info mx-2">
+                    <i class="fab fa-twitter"></i> Twitter
+                </a>
+                <a href="https://instagram.com/smartfooddiary" target="_blank" class="btn btn-outline-danger mx-2">
+                    <i class="fab fa-instagram"></i> Instagram
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
