@@ -1,41 +1,74 @@
-{% extends 'user/base.html' %}
-{% block content %}
-{% load crispy_forms_tags %}
-{% load static %}
+{% extends 'user/base.html' %} {% block content %} {% load static %}
 <style>
-    body {
-        background: url("{% static 'assets/images/register.jpg' %}");
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-    }
+  body {
+    background: url("{% static 'assets/images/register.jpg' %}");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
 </style>
 
-<!-- Top Heading: Smart Food Diary -->
 <div class="header-container mt-5">
-    <h1 class="header-title">Smart Food Diary</h1>
+  <h1 class="header-title">Smart Food Diary</h1>
 </div>
 
-<!-- Login Section -->
 <div class="login-container">
-    <h2 class="login-heading">Welcome Back! <br> Log in to your account</h2>
+  <h2 class="login-heading">
+    Welcome Back! <br />
+    Log in to your account
+  </h2>
 
-    <form method="POST" class="login-form">
-        {% if messages %}
-        <div class="alert-container">
-            {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}" role="alert">
-                {{ message }}
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-        {% csrf_token %}
-        {{form|crispy}}
-        <button type="submit" class="btn btn-primary btn-block">Submit</button>
-    </form>
-    <h6 class="mt-4 text-center">
-        Don't have an account? <a href="{% url 'signup' %}" class="signup-link">Signup</a>
-    </h6>
+  <form method="POST" class="login-form">
+    {% if messages %}
+    <div class="alert-container">
+      {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}" role="alert">
+        {{ message }}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %} {% csrf_token %}
+
+    <!-- Username Field -->
+    <div class="form-group">
+      <label class="form-label">
+        <i class="fa-solid fa-user"></i> Username
+      </label>
+      <input
+        type="text"
+        name="username"
+        id="id_username"
+        class="form-control"
+        value="{{ form.username.value|default_if_none:'' }}"
+      />
+      {% if form.username.errors %}
+      <div class="text-danger">{{ form.username.errors|join:", " }}</div>
+      {% endif %}
+    </div>
+
+    <!-- Password Field -->
+    <div class="form-group">
+      <label class="form-label">
+        <i class="fa-solid fa-key"></i> Password
+      </label>
+      <input
+        type="password"
+        name="password"
+        id="id_password"
+        class="form-control"
+      />
+      {% if form.password.errors %}
+      <div class="text-danger">{{ form.password.errors|join:", " }}</div>
+      {% endif %}
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" class="btn btn-primary btn-block">Login</button>
+  </form>
+
+  <h6 class="mt-4 text-center">
+    Don't have an account?
+    <a href="{% url 'signup' %}" class="signup-link">Signup</a>
+  </h6>
 </div>
 {% endblock %}

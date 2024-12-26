@@ -1,2 +1,13 @@
+# Virtual Environment
 env/
 .env
+
+# Python Cache
+__pycache__
+*.pyc
+
+# Django Migrations
+migrations/
+!migrations/__init__.py
+
+db.sqlite3
