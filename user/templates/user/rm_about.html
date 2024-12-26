@@ -1,0 +1,64 @@
+{% extends 'user/base.html' %}
+
+{% block content %}
+{% load static %}
+<style>
+    body {
+        background: url({% static "assets/images/about.jpg" %});
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+</style>
+<div class="container mt-5">
+    <h1 class="text-center mb-4" style="font-size: 2.5rem; font-weight: bold; color: #43a147;">About Smart Food Diary</h1>
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <p class="text-justify lead" style="font-size: 1.2rem; color: #141212; font-weight: bold;">
+                Smart Food Diary is your personal nutrition assistant, designed to simplify healthy eating and fitness tracking. Our app enables you to log your meals, analyze their nutritional content, and gain insights into your diet. 
+            </p>
+        </div>
+    </div>
+    <p class="text-justify" style="font-size: 1.2rem; color: #602a2a; font-weight: bold;">
+        Whether you're a health enthusiast, on a weight-loss journey, or managing dietary restrictions, our tools empower you to make informed decisions. The app includes features like:
+    </p>
+    <h4 class="text-center mb-4" style="color: #007bff; font-size: 1.5rem;">Key Features</h4>
+    <div class="table-responsive mb-4">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Feature</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Food Image Recognition</td>
+                    <td>Automatically identify meals by simply uploading an image.</td>
+                </tr>
+                <tr>
+                    <td>Calorie and Nutrient Breakdown</td>
+                    <td>Comprehensive analysis of calories, protein, carbs, fats, and more.</td>
+                </tr>
+                <tr>
+                    <td>Customizable Goals</td>
+                    <td>Set dietary goals based on your personal preferences and track your progress.</td>
+                </tr>
+                <tr>
+                    <td>Insights & Visualizations</td>
+                    <td>Gain a clear understanding of your eating habits through charts and reports.</td>
+                </tr>
+                <tr>
+                    <td>Interactive Dashboards</td>
+                    <td>Navigate through an intuitive and visually appealing interface for a better experience.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <p class="text-justify lead" style="font-size: 1.2rem; color: #504848; font-weight: bold;">
+        At Smart Food Diary, we believe in making healthy living accessible and enjoyable for everyone. Join us today to take control of your health!
+    </p>
+    <p class="text-center mt-4"><a href="{% url 'register' %}" class="btn btn-success btn-lg">Join Us Today</a></p>
+</div>
+{% endblock content %}
+

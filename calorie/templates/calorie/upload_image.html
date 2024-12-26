@@ -1,17 +1,18 @@
 {% extends 'calorie/base.html' %}
+
 {% block content %}
-<div class="container-fluid mt-5">
+<div class="container mt-5">
   <div class="row justify-content-center">
     <div class="col-lg-6">
-      <div class="card">
+      <div class="card shadow">
         <div class="card-body">
-          <h5 class="card-title text-center">Upload Image</h5>
+          <h3 class="card-title text-center mb-4">Upload Meal Image</h3>
           <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="mb-3">
               {{ form.as_p }}
             </div>
-            <button type="submit" class="btn btn-primary w-100">Upload</button>
+            <button type="submit" class="btn btn-primary w-100">Upload Image</button>
           </form>
         </div>
       </div>

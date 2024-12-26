@@ -1,0 +1,55 @@
+{% extends 'user/base.html' %}
+
+{% block content %}
+{% load static %}
+<style>
+    body {
+        background: url("{% static 'assets/images/about.jpg' %}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+</style>
+<div class="container mt-5">
+        <h1 class="text-center mb-4">Learn More About Smart Food Diary</h1>
+        <p class="text-justify">
+            Smart Food Diary is packed with innovative features designed to make tracking your meals and health goals simple and effective. Here's a closer look at how the app works:
+        </p>
+
+        <h3>Key Features:</h3>
+        <ul class="list-group mb-4">
+            <li class="list-group-item">
+                <strong>Meal Logging:</strong> Quickly log meals using text input or image recognition.
+            </li>
+            <li class="list-group-item">
+                <strong>Nutritional Analysis:</strong> Receive detailed breakdowns of calories, macronutrients, and micronutrients.
+            </li>
+            <li class="list-group-item">
+                <strong>Personalized Goals:</strong> Set calorie targets, track weight loss, or build muscle with tailored recommendations.
+            </li>
+            <li class="list-group-item">
+                <strong>Insights and Reports:</strong> Visualize your progress through charts, graphs, and summaries.
+            </li>
+        </ul>
+
+        <h3>How to Use the App:</h3>
+        <p>
+            Getting started is simple! Just register or log in to your account, and you’ll gain access to a variety of tools:
+        </p>
+        <ol>
+            <li>Log your meals manually or snap a photo for instant recognition.</li>
+            <li>View detailed nutritional information about your food.</li>
+            <li>Track your progress over time with daily, weekly, and monthly reports.</li>
+        </ol>
+
+        <h3>Why Choose Smart Food Diary?</h3>
+        <p>
+            Our app is tailored for everyone, whether you're a fitness enthusiast, a busy professional, or someone managing health conditions. We strive to combine convenience with accuracy, ensuring you stay on track with your goals effortlessly.
+        </p>
+
+        <div class="text-center mt-4">
+            <a href="{% url 'register' %}" class="btn btn-primary btn-lg mx-2">Get Started</a>
+            <a href="{% url 'contact' %}" class="btn btn-secondary btn-lg mx-2">Contact Support</a>
+        </div>
+    </div>
+{% endblock content %}

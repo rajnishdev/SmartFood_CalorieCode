@@ -1,0 +1,96 @@
+{% extends 'calorie/base.html' %}
+{% block content %}
+<h1 class="text-center mt-5" style="color: #FFFFFF;">Trends and Reports</h1>
+<p class="text-center" style="color: #FFFFFF;">This page will display trends based on the meals you've logged.</p>
+
+<!-- Empty Tile for Report (Placeholder for later) -->
+<div class="row mt-5">
+    <div class="col-md-12">
+        <div class="card shadow-lg">
+            <div class="card-header bg-primary text-white text-center">
+                Trends (Day-Wise)
+            </div>
+            <div class="card-body">
+                {% if has_data %}
+                    <canvas id="mealTrendsChart"></canvas>
+                {% else %}
+                    <p class="text-center" style="color: #FFFFFF;">No data available for today. Please log some meals.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    {% if has_data %}
+    // Prepare data from Django context
+    var dates = {{ dates|safe }};
+    var calories = {{ calories|safe }};
+    var protein = {{ protein|safe }};
+    var carbs = {{ carbs|safe }};
+    var fats = {{ fats|safe }};
+    
+    // Chart.js setup
+    var ctx = document.getElementById('mealTrendsChart').getContext('2d');
+    var mealTrendsChart = new Chart(ctx, {
+        type: 'line',  // 'line' or 'bar' chart, depending on the visual preference
+        data: {
+            labels: dates,  // X-axis labels (dates)
+            datasets: [
+                {
+                    label: 'Calories',
+                    data: calories,  // Y-axis data for calories
+                    borderColor: 'red',
+                    backgroundColor: 'rgba(255, 0, 0, 0.2)',
+                    fill: true,
+                    tension: 0.4
+                },
+                {
+                    label: 'Protein',
+                    data: protein,  // Y-axis data for protein
+                    borderColor: 'blue',
+                    backgroundColor: 'rgba(0, 0, 255, 0.2)',
+                    fill: true,
+                    tension: 0.4
+                },
+                {
+                    label: 'Carbs',
+                    data: carbs,  // Y-axis data for carbs
+                    borderColor: 'green',
+                    backgroundColor: 'rgba(0, 255, 0, 0.2)',
+                    fill: true,
+                    tension: 0.4
+                },
+                {
+                    label: 'Fats',
+                    data: fats,  // Y-axis data for fats
+                    borderColor: 'yellow',
+                    backgroundColor: 'rgba(255, 255, 0, 0.2)',
+                    fill: true,
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Date'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Amount (g or kcal)'
+                    },
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    {% endif %}
+</script>
+{% endblock %}

@@ -1,0 +1,7 @@
+{% extends 'calorie/base.html' %}
+{% block content %}
+<h2 style="color: #FFFFFF;">Daily Goals</h2>
+<p style="color: #FFFFFF;">Calories: {{ daily_goal.calories }}</p>
+<p style="color: #FFFFFF;">Protein: {{ daily_goal.protein }}</p>
+<a href="{% url 'edit_daily_goals' %}" class="btn btn-primary">Edit Goals</a>
+{% endblock %}

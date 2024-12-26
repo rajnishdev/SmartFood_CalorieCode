@@ -13,15 +13,12 @@ class DailyGoal(models.Model):
         return f"{self.user.username}'s Daily Goal"
 
 
-
-
 class Image(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='uploaded_images')
 
     def __str__(self):
         return self.image.name
-
 
 
 class NutritionData(models.Model):
@@ -42,7 +39,7 @@ class NutritionData(models.Model):
     vitaminb12 = models.PositiveIntegerField(default=0)
     folic_acid = models.PositiveIntegerField(default=0)
     updated_at = models.DateTimeField(auto_now=True)
+    timestamp = models.DateTimeField(auto_now_add=True)  # Add this for tracking upload date
 
     def __str__(self):
         return f"{self.class_name} nutrition"
-

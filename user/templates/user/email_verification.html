@@ -1,0 +1,11 @@
+{% extends 'user/base.html' %}
+{% block content %}
+Hi {{ user.username }},
+
+Please verify your email by clicking the link below:
+
+{{ verification_link }}
+
+Thank you!
+
+{% endblock content %}

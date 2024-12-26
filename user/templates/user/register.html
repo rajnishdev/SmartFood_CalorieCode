@@ -1,6 +1,7 @@
 {% extends 'user/base.html' %}
 
 {% block content %}
+{% load crispy_forms_tags %}
 {% load static %}
 <style>
     body {
@@ -16,106 +17,69 @@
 
     <form method="POST" class="registration-form">
         {% if messages %}
-        <div class="alert-container">
-            {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}" role="alert">
-                {{ message }}
+            <div class="alert-container">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" role="alert">
+                    {{ message }}
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
-        </div>
         {% endif %}
         {% csrf_token %}
-
+        
         <!-- Username -->
         <div class="form-group">
-            <label for="id_username" class="form-label" style="margin-left: -309px;">
-                <i class="fa-solid fa-user"></i> Username
-            </label>
-            <input type="text" name="username" id="id_username" class="form-control" value="{{ form.username.value|default_if_none:'' }}">
-            {% if form.username.errors %}
-            <div class="text-danger">
-                {{ form.username.errors|join:", " }}
-            </div>
-            {% endif %}
+        <label class="form-label" style="margin-left: -300px;"><i class="fa-solid fa-user"></i> Username</label>
+          <div class="form-field">
+              {{ form.username|as_crispy_field }}
+          </div>
         </div>
 
         <!-- Email -->
         <div class="form-group">
-            <label for="id_email" class="form-label" style="margin-left: -344px;">
-                <i class="fa-solid fa-envelope"></i> Email
-            </label>
-            <input type="email" name="email" id="id_email" class="form-control" value="{{ form.email.value|default_if_none:'' }}">
-            {% if form.email.errors %}
-            <div class="text-danger">
-                {{ form.email.errors|join:", " }}
+            <label class="form-label" style="margin-left: -335px;"><i class="fa-solid fa-envelope"></i> Email</label>
+            <div class="form-field">
+                {{ form.email|as_crispy_field }}
             </div>
-            {% endif %}
         </div>
-
-        <!-- Name -->
+        
         <div class="form-group">
-            <label for="id_name" class="form-label"style="margin-left: -361px;">Name</label>
-            <input type="text" name="name" id="id_name" class="form-control" value="{{ form.name.value|default_if_none:'' }}">
-            {% if form.name.errors %}
-            <div class="text-danger">
-                {{ form.name.errors|join:", " }}
+            <label class="form-label" style="margin-left: -360px;"s>Name</label>
+            <div class="form-field">
+                {{ form.name|as_crispy_field }}
             </div>
-            {% endif %}
         </div>
 
         <!-- Age -->
         <div class="form-group">
-            <label for="id_age" class="form-label" style="margin-left: -374px;">Age</label>
-            <input type="number" name="age" id="id_age" class="form-control"  value="{{ form.age.value|default_if_none:'' }}">
-            {% if form.age.errors %}
-            <div class="text-danger">
-                {{ form.age.errors|join:", " }}
+            <label class="form-label" style="margin-left: -370px;"s>Age</label>
+            <div class="form-field">
+                {{ form.age|as_crispy_field }}
             </div>
-            {% endif %}
         </div>
 
         <!-- Gender -->
         <div class="form-group">
-            <label for="id_gender" class="form-label" style="margin-left: -345px;">
-                <i class="fa-solid fa-person-half-dress"></i> Gender
-            </label>
-            <select name="gender" id="id_gender" class="form-control">
-                <option value="">Select your gender</option>
-                {% for key, value in form.gender.field.choices %}
-                <option value="{{ key }}" {% if form.gender.value == key %}selected{% endif %}>{{ value }}</option>
-                {% endfor %}
-            </select>
-            {% if form.gender.errors %}
-            <div class="text-danger">
-                {{ form.gender.errors|join:", " }}
+            <label class="form-label" style="margin-left: -330px;"s><i class="fa-solid fa-person-half-dress"></i> Gender</label>
+            <div class="form-field">
+                {{ form.gender|as_crispy_field }}
             </div>
-            {% endif %}
         </div>
 
         <!-- Password -->
         <div class="form-group">
-            <label for="id_password1" class="form-label" style="margin-left: -320px;">
-                <i class="fa-solid fa-key"></i> Password
-            </label>
-            <input type="password" name="password1" id="id_password1" class="form-control" >
-            {% if form.password1.errors %}
-            <div class="text-danger">
-                {{ form.password1.errors|join:", " }}
+            <label class="form-label" style="margin-left: -310px;"s><i class="fa-solid fa-key"></i> Password</label>
+            <div class="form-field">
+                {{ form.password1|as_crispy_field }}
             </div>
-            {% endif %}
         </div>
 
         <!-- Confirm Password -->
         <div class="form-group">
-            <label for="id_password2" class="form-label" style="margin-left: -246px;">
-                <i class="fa-solid fa-key"></i> Confirm Password
-            </label>
-            <input type="password" name="password2" id="id_password2" class="form-control">
-            {% if form.password2.errors %}
-            <div class="text-danger">
-                {{ form.password2.errors|join:", " }}
+            <label class="form-label" style="margin-left: -240px;"s><i class="fa-solid fa-key"></i> Confirm Password</label>
+            <div class="form-field">
+                {{ form.password2|as_crispy_field }}
             </div>
-            {% endif %}
         </div>
 
         <!-- Submit Button -->

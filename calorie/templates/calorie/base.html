@@ -9,30 +9,49 @@
     <link rel="stylesheet" href="{% static 'calorie/style.css' %}">
   </head>
   <body>
-    <div class="d-flex">
-      <button id="toggle-btn" class="btn btn-dark m-3">☰ </button>
-    </div>
-    <div class="sidenav" id="sidenav">
-      <h3 class="text-center text-light mb-5">Smart Food Diary</h3>
-      <a href="{% url 'home' %}">🏠 Dashboard</a>
-      <a href="{% url 'upload_image' %}">📷 Upload Image</a>
-      <a href="{% url 'signout' %}">🚪 Logout</a>
-    </div>
-    <div class="content" id="content">
-      {% block content %} {% endblock %}
-    </div>
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const toggleButton = document.getElementById("toggle-btn");
-        const sideNav = document.getElementById("sidenav");
-        const content = document.getElementById("content");
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'dashboard' %}">Smart Food Diary</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'log_meals' %}">Log Meals</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'trends_reports' %}">Trends and Reports</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'recommendations' %}">Recommendations</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'daily_goals' %}">Daily Goals</a>
+            </li>
+          </ul>
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="{% static 'calorie/profile_icon.png' %}" alt="Profile Icon" class="rounded-circle" width="30" height="30">
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+                <li><a class="dropdown-item" href="{% url 'signout' %}">Logout</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
 
-        toggleButton.addEventListener("click", function () {
-          sideNav.classList.toggle("open");
-          content.classList.toggle("shift");
-        });
-      });
-    </script>
+    <!-- Content Section -->
+    <div class="container mt-4">
+      {% block content %}
+      {% endblock %}
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
   </body>
 </html>

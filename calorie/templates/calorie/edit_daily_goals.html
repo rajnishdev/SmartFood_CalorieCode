@@ -1,17 +1,17 @@
 {% extends 'calorie/base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
-<div class="container-fluid mt-5">
+<div class="container mt-5">
   <div class="row justify-content-center">
     <div class="col-lg-6">
-      <div class="card">
+      <div class="card shadow">
         <div class="card-body">
-          <h5 class="card-title text-center">Edit Your Daily Goals</h5>
+          <h3 class="card-title text-center mb-4">Edit Your Daily Goals</h3>
           <form method="POST">
             {% csrf_token %}
-            {{form|crispy}}
+            {{ form|crispy }}
             <div class="d-flex justify-content-between mt-4">
-              <a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
+              <a href="{% url 'daily_goals' %}" class="btn btn-secondary">Cancel</a>
               <button type="submit" class="btn btn-success">Save Goals</button>
             </div>
           </form>

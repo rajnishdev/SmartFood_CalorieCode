@@ -1,0 +1,80 @@
+{% extends 'calorie/base.html' %}
+
+{% block content %}
+<div class="mt-4" style="padding-left: 20px; color: #FFFFFF;">
+    <!-- Greeting Section -->
+    <h1 style="text-align: left; color: #FFFFFF;">
+        Hello, {{ user.first_name|default:user.username }} {% if user.first_name and user.last_name %}{{ user.last_name }}{% endif %}! Let's track your meal today.
+    </h1>
+    <p style="text-align: left; color: #FFFFFF;">{{ today_date }}</p>
+</div>
+<div class="container mt-4">
+    <!-- Greeting Section -->
+    
+    <!-- Upload Image and Meal Logging Section -->
+    <div class="row mt-5">
+        <!-- Upload Section -->
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white text-center">
+                    Log Your Meal
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data" action="{% url 'upload_image' %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="meal_image" class="form-label">Upload Meal Image:</label>
+                            <input type="file" name="image" id="meal_image" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Log Meal</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logged Meals Section -->
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-header bg-secondary text-white text-center">
+                    Logged Meals
+                </div>
+                <div class="card-body">
+                    {% if meals %}
+                    <div class="row">
+                        {% for meal in meals %}
+                        <div class="col-md-12 mb-3">
+                            <div class="card">
+                                <img src="{{ meal.image.image.url }}" class="card-img-top" alt="{{ meal.class_name }}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ meal.class_name }}</h5>
+                                    
+                                    <!-- Nutritional Information List -->
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item"><strong>Calories:</strong> {{ meal.calories }} kcal</li>
+                                        <li class="list-group-item"><strong>Protein:</strong> {{ meal.protein }} g</li>
+                                        <li class="list-group-item"><strong>Carbohydrates:</strong> {{ meal.carbs }} g</li>
+                                        <li class="list-group-item"><strong>Fats:</strong> {{ meal.fats }} g</li>
+                                        <li class="list-group-item"><strong>Cholesterol:</strong> {{ meal.cholesterol }} mg</li>
+                                        <li class="list-group-item"><strong>Iron:</strong> {{ meal.iron }} mg</li>
+                                        <li class="list-group-item"><strong>Calcium:</strong> {{ meal.calcium }} mg</li>
+                                        <li class="list-group-item"><strong>Sodium:</strong> {{ meal.sodium }} mg</li>
+                                        <li class="list-group-item"><strong>Magnesium:</strong> {{ meal.magnesium }} mg</li>
+                                        <li class="list-group-item"><strong>Phosphorus:</strong> {{ meal.phosphorus }} mg</li>
+                                        <li class="list-group-item"><strong>Zinc:</strong> {{ meal.zinc }} mg</li>
+                                        <li class="list-group-item"><strong>Vitamin B12:</strong> {{ meal.vitaminb12 }} μg</li>
+                                        <li class="list-group-item"><strong>Folic Acid:</strong> {{ meal.folic_acid }} μg</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="text-center">No meals logged yet. Start by uploading a meal image!</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
