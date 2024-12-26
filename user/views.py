@@ -34,22 +34,26 @@ def signup(request):
     if request.method == "POST":
         form = forms.RegistrationForm(request.POST)
         if form.is_valid():
+            # Create User
             user = form.save(commit=False)
-            user.set_password(form.cleaned_data['password1'])  
-            user.is_active = False  # Deactivate account until email is verified
+            user.set_password(form.cleaned_data['password1'])
+            user.is_active = False
             user.save()
 
-            # Send verification email
-            utils.send_verification_email(user, request)
+            # Create or update UserProfile
+            profile = UserProfile.objects.create(
+                user=user,
+                name=form.cleaned_data['name'],
+                age=form.cleaned_data['age'],
+                gender=form.cleaned_data['gender']
+            )
 
-            messages.success(request, 'Account successfully created. Please check your email to verify your account.')
-            return redirect('login')
-        else:
-            return render(request, 'user/register.html', {'form': form})
+            utils.send_verification_email(user, request)
+            messages.success(request, 'Account created! Please check your email to verify your account.')
+            return redirect('goals')
     else:
         form = forms.RegistrationForm()
-    return render(request, 'user/register.html', {'form': form})
-
+    return render(request, 'user/signup.html', {'form': form})
 
 def signout(request):
     messages.success(request, "You have been successfully logged out!")

@@ -4,12 +4,11 @@ from .models import DailyGoal, Image
 class DailyGoalForm(forms.ModelForm):
     class Meta:
         model = DailyGoal
-        fields = ['calories', 'protein', 'carbs', 'fats']
+        fields = ['weight', 'height', 'lifestyle']
         widgets = {
-            'calories': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'e.g., 2000'}),
-            'protein': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'e.g., 50'}),
-            'carbs': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'e.g., 250g'}),
-            'fats': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'e.g., 70g'}),
+            'weight': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter weight in kg'}),
+            'height': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter height in cm'}),
+            'lifestyle': forms.Select(attrs={'class': 'form-control'})
         }
         labels = {
             'calories': 'Daily Calorie Goal (kcal)',

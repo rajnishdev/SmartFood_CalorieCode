@@ -1,0 +1,104 @@
+{% extends 'calorie/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container-fluid mt-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title text-center">
+            {% if is_initial_setup %}
+              Set Your Goals
+            {% else %}
+              Update Your Goals
+            {% endif %}
+          </h5>
+          <form method="POST" id="goalForm">
+            {% csrf_token %}
+            {{form|crispy}}
+            
+            <!-- Results Section (Initially Hidden) -->
+            <div id="resultsSection" style="display: none;" class="mt-4">
+              <h6 class="text-center">Calculated Goals</h6>
+              <div class="calculated-goals p-3 rounded">
+                <p><strong>BMI:</strong> <span id="bmiResult"></span></p>
+                <p><strong>Daily Calories:</strong> <span id="caloriesResult"></span> kcal</p>
+                <p><strong>Macronutrients Breakdown:</strong></p>
+                <ul>
+                  <li>Protein: <span id="proteinResult"></span>g</li>
+                  <li>Carbs: <span id="carbsResult"></span>g</li>
+                  <li>Fats: <span id="fatsResult"></span>g</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="lifestyle-info mt-3">
+              <h6>Lifestyle Definitions:</h6>
+              <ul class="small">
+                <li><strong>Sedentary:</strong> Less than 30 minutes exercise per week</li>
+                <li><strong>Moderately Active:</strong> 30-150 minutes per week</li>
+                <li><strong>Active:</strong> 150-300 minutes per week</li>
+                <li><strong>Very Active:</strong> More than 300 minutes per week</li>
+              </ul>
+            </div>
+            
+            <div class="d-flex justify-content-between mt-4">
+              {% if not is_initial_setup %}
+                <a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
+              {% endif %}
+              <button type="button" id="calculateBtn" class="btn btn-primary">Calculate</button>
+              <button type="submit" id="saveBtn" class="btn btn-success" style="display: none;">Confirm & Save</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('calculateBtn').addEventListener('click', function() {
+    const weight = parseFloat(document.getElementById('id_weight').value);
+    const height = parseFloat(document.getElementById('id_height').value);
+    const lifestyle = document.getElementById('id_lifestyle').value;
+    
+    if (weight && height && lifestyle) {
+        // Calculate BMI
+        const heightInMeters = height / 100;
+        const bmi = weight / (heightInMeters * heightInMeters);
+        
+        // Calculate base calories based on lifestyle
+        let baseCalories = {
+            'S': 2000,
+            'M': 2300,
+            'A': 2600,
+            'V': 3000
+        }[lifestyle];
+        
+        // Adjust calories based on BMI
+        if (bmi > 25) {
+            baseCalories *= 0.85; // Weight loss
+        } else if (bmi < 18.5) {
+            baseCalories *= 1.15; // Weight gain
+        }
+        
+        // Calculate macros
+        const protein = Math.round(baseCalories * 0.20 / 4);
+        const carbs = Math.round(baseCalories * 0.50 / 4);
+        const fats = Math.round(baseCalories * 0.30 / 9);
+        
+        // Display results
+        document.getElementById('bmiResult').textContent = bmi.toFixed(1);
+        document.getElementById('caloriesResult').textContent = Math.round(baseCalories);
+        document.getElementById('proteinResult').textContent = protein;
+        document.getElementById('carbsResult').textContent = carbs;
+        document.getElementById('fatsResult').textContent = fats;
+        
+        // Show results and save button
+        document.getElementById('resultsSection').style.display = 'block';
+        document.getElementById('saveBtn').style.display = 'block';
+        document.getElementById('calculateBtn').style.display = 'none';
+    }
+});
+</script>
+{% endblock %}

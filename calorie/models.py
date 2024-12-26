@@ -2,15 +2,21 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class DailyGoal(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='daily_goal')
-    calories = models.PositiveIntegerField(default=2000, help_text="Daily calorie goal in kcal.")
-    protein = models.PositiveIntegerField(default=50, help_text="Daily protein goal in grams.")
-    carbs = models.PositiveIntegerField(default=250, help_text="Daily carbohydrate goal in grams.")
-    fats = models.PositiveIntegerField(default=70, help_text="Daily fat goal in grams.")
-    updated_at = models.DateTimeField(auto_now=True, help_text="Last updated timestamp.")
-
-    def __str__(self):
-        return f"{self.user.username}'s Daily Goal"
+    LIFESTYLE_CHOICES = [
+        ('S', 'Sedentary'),
+        ('M', 'Moderately Active'),
+        ('A', 'Active'),
+        ('V', 'Very Active'),
+    ]
+    
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    weight = models.DecimalField(max_digits=5, decimal_places=2, default=70)
+    height = models.DecimalField(max_digits=5, decimal_places=2, default=170)
+    lifestyle = models.CharField(max_length=1, choices=LIFESTYLE_CHOICES, default='S')
+    calories = models.PositiveIntegerField(default=2000)
+    protein = models.PositiveIntegerField(default=100)
+    carbs = models.PositiveIntegerField(default=250)
+    fats = models.PositiveIntegerField(default=67)
 
 
 

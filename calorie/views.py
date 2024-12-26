@@ -1,4 +1,4 @@
-import torch
+
 
 from django.shortcuts import render, redirect
 from django.urls import path
@@ -21,7 +21,69 @@ def home(request):
     }
     return render(request,'calorie/home.html', context)
 
+def calculate_bmi(weight, height):
+    height_m = height / 100
+    return weight / (height_m * height_m)
 
+def get_recommended_values(weight, height, lifestyle, gender):
+    bmi = calculate_bmi(weight, height)
+    base_calories = {
+        'S': {'M': 2000, 'F': 1800},
+        'M': {'M': 2300, 'F': 2000},
+        'A': {'M': 2600, 'F': 2200},
+        'V': {'M': 3000, 'F': 2400}
+    }
+
+    calories = base_calories[lifestyle][gender]
+    
+    if bmi > 25:  # Weight loss
+        calories *= 0.85
+    elif bmi < 18.5:  # Weight gain
+        calories *= 1.15
+
+    return {
+        'calories': int(calories),
+        'protein': int(calories * 0.20 / 4),  # 20% of calories from protein
+        'carbs': int(calories * 0.50 / 4),    # 50% of calories from carbs
+        'fats': int(calories * 0.30 / 9)      # 30% of calories from fats
+    }
+
+@login_required
+def goals(request):
+    daily_goal = DailyGoal.objects.filter(user=request.user).first()
+    is_initial_setup = daily_goal is None
+
+    if request.method == 'POST':
+        form = DailyGoalForm(request.POST, instance=daily_goal)
+        if form.is_valid():
+            goal = form.save(commit=False)
+            
+            # Calculate recommended values
+            recommendations = get_recommended_values(
+                float(goal.weight),
+                float(goal.height),
+                goal.lifestyle,
+                request.user.userprofile.gender
+            )
+            
+            # Set the calculated values
+            goal.calories = recommendations['calories']
+            goal.protein = recommendations['protein']
+            goal.carbs = recommendations['carbs']
+            goal.fats = recommendations['fats']
+            goal.user = request.user
+            goal.save()
+            
+            return redirect('home')
+    else:
+        form = DailyGoalForm(instance=daily_goal)
+    
+    return render(request, 'calorie/goals.html', {
+        'form': form,
+        'is_initial_setup': is_initial_setup
+    })
+
+'''
 @login_required
 def edit_daily_goals(request):
     """
@@ -44,7 +106,7 @@ def edit_daily_goals(request):
 
     # Render the template with the form
     return render(request, 'calorie/edit_daily_goals.html', {'form': form})
-
+'''
 
 
 def upload_image(request):
