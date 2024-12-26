@@ -1,26 +1,197 @@
-{% extends 'calorie/base.html' %}
-{% block content %}
-<div class="container">
-    <div class="card">
+{% extends 'calorie/base.html' %} {% block content %}
+<div class="container" style="margin-top: -80px">
+  <div class="row">
+    <!-- Meal Details Section -->
+    <div class="col-md-6">
+      <div class="card">
         <div class="card-body">
-            <h5 class="card-title text-center">{{ data.class_name }} nutrition data</h5>
-            <ul class="list-group">
-                <li class="list-group-item"><strong>Calories:</strong> {{ data.calories }} kcal</li>
-                <li class="list-group-item"><strong>Protein:</strong> {{ data.protein }} g</li>
-                <li class="list-group-item"><strong>Carbohydrates:</strong> {{ data.carbs }} g</li>
-                <li class="list-group-item"><strong>Fats:</strong> {{ data.fats }} g</li>
-                <li class="list-group-item"><strong>Cholestrol:</strong> {{ data.cholestrol }} g</li>
-                <li class="list-group-item"><strong>Iron:</strong> {{ data.iron }} mg</li>
-                <li class="list-group-item"><strong>Calcium:</strong> {{ data.calcium }} mg</li>
-                <li class="list-group-item"><strong>Sodium:</strong> {{ data.sodium }} mg</li>
-                <li class="list-group-item"><strong>Magnesium:</strong> {{ data.magnesium }} mg</li>
-                <li class="list-group-item"><strong>Phosphorus:</strong> {{ data.phosphorus }} mg</li>
-                <li class="list-group-item"><strong>Zinc:</strong> {{ data.zinc }} mg</li>
-                <li class="list-group-item"><strong>Vitamin B12:</strong> {{ data.vitaminb12 }} mg</li>
-                <li class="list-group-item"><strong>Folic acid:</strong> {{ data.folic_acid }} mg</li>
-            </ul>
-            <a href="{% url 'home' %}" class="btn btn-success w-100 mt-3">Back to Dashboard</a>
+          <h5 class="card-title">Meal Details</h5>
+          {% if data %}
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <strong>Calories:</strong> {{ data.calories }}
+            </li>
+            <li class="list-group-item">
+              <strong>Protein:</strong> {{ data.protein }} g
+            </li>
+            <li class="list-group-item">
+              <strong>Carbs:</strong> {{ data.carbs }} g
+            </li>
+            <li class="list-group-item">
+              <strong>Fats:</strong> {{ data.fats }} g
+            </li>
+            <li class="list-group-item">
+              <strong>Cholesterol:</strong> {{ data.cholestrol }} mg
+            </li>
+            <li class="list-group-item">
+              <strong>Iron:</strong> {{ data.iron }} mg
+            </li>
+            <li class="list-group-item">
+              <strong>Calcium:</strong> {{ data.calcium }} mg
+            </li>
+            <li class="list-group-item">
+              <strong>Sodium:</strong> {{ data.sodium }} mg
+            </li>
+            <li class="list-group-item">
+              <strong>Magnesium:</strong> {{ data.magnesium }} mg
+            </li>
+            <li class="list-group-item">
+              <strong>Phosphorus:</strong> {{ data.phosphorus }} mg
+            </li>
+            <li class="list-group-item">
+              <strong>Zinc:</strong> {{ data.zinc }} mg
+            </li>
+            <li class="list-group-item">
+              <strong>Vitamin B12:</strong> {{ data.vitaminb12 }} µg
+            </li>
+            <li class="list-group-item">
+              <strong>Folic Acid:</strong> {{ data.folic_acid }} µg
+            </li>
+          </ul>
+          {% else %}
+          <p class="text-muted">No meal details available.</p>
+          {% endif %}
         </div>
+      </div>
     </div>
+
+    <!-- Charts Section -->
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title text-center">Nutrition Overview Charts</h5>
+
+          <!-- Toggle Bar Chart Button -->
+          <div class="text-center mb-3">
+            <button
+              class="btn btn-primary"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#barChartCollapse"
+              aria-expanded="false"
+              aria-controls="barChartCollapse"
+            >
+              Toggle Bar Chart
+            </button>
+          </div>
+
+          <!-- Collapsible Bar Chart -->
+          <div class="collapse" id="barChartCollapse">
+            {% if bar_chart %}
+            <div class="text-center">
+              <img
+                src="data:image/png;base64,{{ bar_chart }}"
+                alt="Bar chart representing the nutrition overview"
+                class="img-fluid"
+              />
+            </div>
+            {% else %}
+            <p class="text-center text-muted">
+              No data available for visualization.
+            </p>
+            {% endif %}
+          </div>
+
+          <!-- Toggle Pie Chart Button -->
+          <div class="text-center mb-3 mt-3">
+            <button
+              class="btn btn-primary"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#pieChartCollapse"
+              aria-expanded="false"
+              aria-controls="pieChartCollapse"
+            >
+              Toggle Pie Chart
+            </button>
+          </div>
+
+          <!-- Collapsible Pie Chart -->
+          <div class="collapse" id="pieChartCollapse">
+            {% if pie_chart %}
+            <div class="text-center">
+              <img
+                src="data:image/png;base64,{{ pie_chart }}"
+                alt="Pie chart representing the nutrition overview"
+                class="img-fluid"
+              />
+            </div>
+            {% else %}
+            <p class="text-center text-muted">
+              No data available for visualization.
+            </p>
+            {% endif %}
+          </div>
+
+          <!-- Toggle Line Chart Button -->
+          <div class="text-center mb-3 mt-3">
+            <button
+              class="btn btn-primary"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#lineChartCollapse"
+              aria-expanded="false"
+              aria-controls="lineChartCollapse"
+            >
+              Toggle Line Chart
+            </button>
+          </div>
+
+          <!-- Collapsible Line Chart -->
+          <div class="collapse" id="lineChartCollapse">
+            {% if line_chart %}
+            <div class="text-center">
+              <img
+                src="data:image/png;base64,{{ line_chart }}"
+                alt="Line chart representing the nutrition overview"
+                class="img-fluid"
+              />
+            </div>
+            {% else %}
+            <p class="text-center text-muted">
+              No data available for visualization.
+            </p>
+            {% endif %}
+          </div>
+
+          <!-- Toggle Donut Chart Button -->
+          <div class="text-center mb-3 mt-3">
+            <button
+              class="btn btn-primary"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#donutChartCollapse"
+              aria-expanded="false"
+              aria-controls="donutChartCollapse"
+            >
+              Toggle Donut Chart
+            </button>
+          </div>
+
+          <!-- Collapsible Donut Chart -->
+          <div class="collapse" id="donutChartCollapse">
+            {% if donut_chart %}
+            <div class="text-center">
+              <img
+                src="data:image/png;base64,{{ donut_chart }}"
+                alt="Donut chart representing the nutrition overview"
+                class="img-fluid"
+              />
+            </div>
+            {% else %}
+            <p class="text-center text-muted">
+              No data available for visualization.
+            </p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Buttons -->
+  <div class="text-center mt-3">
+    <a href="{% url 'home' %}" class="btn btn-primary">Back to Dashboard</a>
+  </div>
 </div>
 {% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'user/base.html' %}
+
+{% block content %}
+{% load static %}
+<style>
+    body {
+        background: url("{% static 'assets/images/signout.jpg' %}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 100vh; /* Make the body take up the full viewport height */
+        margin: 0; /* Remove any default margins */
+        padding: 0; /* Remove any default padding */
+    }
+</style>
+<div class="fullscreen-center">
+    <div class="text-center">
+        <div class="alert alert-success" role="alert">
+            <h2 class="signed-out-heading">You have been Signed Out</h2>
+            <p class="lead">We hope to see you back soon! <br> Click below to go to home page</p>
+        </div>
+        <div class="mt-4">
+            <a href="{% url 'options' %}" class="btn btn-primary btn-lg" style="font-size: 1.2rem; padding: 10px 30px; border-radius: 50px; text-decoration: none; transition: all 0.3s;">HOME</a>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,4 +1,9 @@
-
+import base64
+import io
+import matplotlib. pyplot as plt
+from matplotlib import use
+from django.http import HttpResponse
+from matplotlib. figure import Figure
 
 from django.shortcuts import render, redirect
 from django.urls import path
@@ -157,4 +162,67 @@ def upload_image(request):
 
 def meal_detail(request):
     data = NutritionData.objects.last()
-    return render(request, "calorie/meal_detail.html", {"data": data})
+
+    # Data preparation
+    labels = ['Calories', 'Protein', 'Carbs', 'Fats', 'Cholestrol', 'Iron', 'Calcium', 'Sodium', 'Magnesium']
+    values = [data.calories, data.protein, data.carbs, data.fats, data.cholestrol, data.iron, data.calcium, data.sodium, data.magnesium]
+
+    # Generate the bar chart
+    plt.bar(labels, values, color=['red', 'blue', 'green', 'orange', 'pink', 'yellow', 'orange', 'violet'])
+    plt.title('Nutrition Overview - Bar Chart')
+    plt.ylabel('Amount')
+    plt.xlabel('Nutrients')
+    plt.xticks(rotation=45)
+
+    buffer = io.BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    bar_chart = base64.b64encode(buffer.getvalue()).decode('utf-8')
+    buffer.close()
+    plt.close()
+
+    # Generate the pie chart
+    plt.pie(values, labels=labels, autopct='%1.1f%%', startangle=90, colors=['red', 'blue', 'green', 'orange', 'pink', 'yellow', 'purple', 'violet', 'cyan'])
+    plt.title('Nutrition Overview - Pie Chart')
+
+    buffer = io.BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    pie_chart = base64.b64encode(buffer.getvalue()).decode('utf-8')
+    buffer.close()
+    plt.close()
+
+    # Generate the line chart
+    plt.plot(labels, values, marker='o', color='blue', linestyle='--')
+    plt.title('Nutrition Overview - Line Chart')
+    plt.ylabel('Amount')
+    plt.xlabel('Nutrients')
+    plt.xticks(rotation=45)
+
+    buffer = io.BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    line_chart = base64.b64encode(buffer.getvalue()).decode('utf-8')
+    buffer.close()
+    plt.close()
+
+    # Generate the donut chart
+    colors = ['red', 'blue', 'green', 'orange', 'pink', 'yellow', 'purple', 'violet', 'cyan']
+    wedges, texts, autotexts = plt.pie(values, labels=labels, autopct='%1.1f%%', startangle=90, colors=colors)
+    plt.title('Nutrition Overview - Donut Chart')
+    plt.gca().add_artist(plt.Circle((0, 0), 0.70, fc='white'))  # Add a white circle in the center to create a donut effect
+
+    buffer = io.BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    donut_chart = base64.b64encode(buffer.getvalue()).decode('utf-8')
+    buffer.close()
+    plt.close()
+
+    return render(request, "calorie/meal_detail.html", {
+        "data": data,
+        "bar_chart": bar_chart,
+        "pie_chart": pie_chart,
+        "line_chart": line_chart,
+        "donut_chart": donut_chart
+    })

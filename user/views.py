@@ -40,12 +40,14 @@ def signup(request):
             user.is_active = False
             user.save()
 
-            # Create or update UserProfile
-            profile = UserProfile.objects.create(
+            # Ensure UserProfile creation only if it doesn't exist
+            profile, created = UserProfile.objects.get_or_create(
                 user=user,
-                name=form.cleaned_data['name'],
-                age=form.cleaned_data['age'],
-                gender=form.cleaned_data['gender']
+                defaults={
+                    'name': form.cleaned_data['name'],
+                    'age': form.cleaned_data['age'],
+                    'gender': form.cleaned_data['gender']
+                }
             )
 
             utils.send_verification_email(user, request)
