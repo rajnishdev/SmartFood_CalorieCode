@@ -1,18 +1,24 @@
-{% extends 'calorie/base.html' %}
-{% block content %}
+{% extends 'calorie/base.html' %} {% block content %}
 <div class="container-fluid mt-5">
   <div class="row justify-content-center">
     <div class="col-lg-6">
       <div class="card">
         <div class="card-body">
           <h5 class="card-title text-center">Upload Image</h5>
+          <p class="text-muted text-center" style="color: white">
+            Please upload an image file in JPEG, PNG, or GIF format. Maximum
+            file size: 5MB.
+          </p>
           <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="mb-3">
-              {{ form.as_p }}
-            </div>
+            <div class="mb-3">{{ form.as_p }}</div>
             <button type="submit" class="btn btn-primary w-100">Upload</button>
           </form>
+          <hr />
+          <p class="text-muted text-center small">
+            Supported file types: <strong>JPEG, PNG, GIF</strong><br />
+            Maximum file size: <strong>5MB</strong>
+          </p>
         </div>
       </div>
     </div>

@@ -3,7 +3,7 @@ import io
 import matplotlib. pyplot as plt
 from matplotlib import use
 from django.http import HttpResponse
-from matplotlib. figure import Figure
+from matplotlib.figure import Figure
 
 from django.shortcuts import render, redirect
 from django.urls import path
