@@ -54,6 +54,18 @@
     transform: translateY(0); /* Reset when clicked */
     box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.2); /* Reset shadow */
   }
+
+  .signup-link {
+    text-decoration: none;
+    font-weight: 600;
+    color: #007bff;
+    transition: color 0.3s ease;
+}
+
+.signup-link:hover {
+    color: #0056b3;
+}
+
   /* Styling for each form field */
   
   .form-field {
@@ -94,8 +106,9 @@
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
   }
   
-  /* Responsive Design */
   
+  
+  /* Responsive Design */
   .form-label {
     font-size: 18px;
     font-weight: 600;
@@ -130,10 +143,12 @@
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease-in-out;
   }
+
   .header-title:hover {
     text-shadow: 4px 4px 20px rgba(0, 0, 0, 0.3); /* Increase shadow on hover */
     transform: translateY(-2px); /* Slight bounce effect on hover */
   }
+
   /* Alert Message Container */
   .alert-container {
     width: 100%;
@@ -163,6 +178,8 @@
     transform: translateY(0); /* Reset when clicked */
     box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.2); /* Reset shadow */
   }
+
+
   /* Form Group */
   .form-group {
     margin-bottom: 20px;
@@ -284,6 +301,7 @@
     margin-left: 10px;
     margin-right: 10px;
   }
+
   @keyframes fadeInUp {
     0% {
       opacity: 0;

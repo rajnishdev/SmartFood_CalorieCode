@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class DailyGoal(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='daily_goal')
     calories = models.PositiveIntegerField(default=2000, help_text="Daily calorie goal in kcal.")

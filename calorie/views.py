@@ -39,11 +39,39 @@ def daily_goals(request):
     """
     daily_goal = DailyGoal.objects.filter(user=request.user).first()
     return render(request, 'calorie/daily_goals.html', {'daily_goal': daily_goal})
-
-
+'''
 @login_required
+def log_meals(request):
+    meals = NutritionData.objects.filter(user=request.user).order_by('-timestamp')  # Order by timestamp
 
+    # Initialize or update current meal index in session
+    if 'current_meal_index' not in request.session:
+        request.session['current_meal_index'] = 0
 
+    current_index = request.session['current_meal_index']
+
+    if request.method == "POST":
+        if 'prev' in request.POST and current_index + 1 < meals.count():
+            current_index += 1  # Move to the previous meal
+        elif 'next' in request.POST and current_index > 0:
+            current_index -= 1  # Move to the next meal
+        request.session['current_meal_index'] = current_index
+
+    # Get the meal for the current index
+    current_meal = meals[current_index] if meals.exists() else None
+
+    context = {
+        'user': request.user,
+        'today_date': date.today(),
+        'current_meal': current_meal,
+        'has_meals': meals.exists(),
+        'has_previous': current_index + 1 < meals.count(),
+        'has_next': current_index > 0,
+    }
+    return render(request, 'calorie/log_meal.html', context)
+
+'''
+@login_required
 def log_meals(request):
     meals = NutritionData.objects.filter(user=request.user).order_by('-id')
     context = {
@@ -168,6 +196,7 @@ def dashboard(request):
         'has_next': current_index > 0,
     }
     return render(request, 'calorie/dashboard.html', context)
+
 @login_required
 def profile(request):
     """

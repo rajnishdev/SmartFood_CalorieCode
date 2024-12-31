@@ -1,80 +1,58 @@
 {% extends 'calorie/base.html' %}
-
 {% block content %}
-<div class="mt-4" style="padding-left: 20px; color: #FFFFFF;">
-    <!-- Greeting Section -->
-    <h1 style="text-align: left; color: #FFFFFF;">
-        Hello, {{ user.first_name|default:user.username }} {% if user.first_name and user.last_name %}{{ user.last_name }}{% endif %}! Let's track your meal today.
-    </h1>
-    <p style="text-align: left; color: #FFFFFF;">{{ today_date }}</p>
-</div>
-<div class="container mt-4">
-    <!-- Greeting Section -->
-    
-    <!-- Upload Image and Meal Logging Section -->
-    <div class="row mt-5">
-        <!-- Upload Section -->
-        <div class="col-md-6">
-            <div class="card shadow-lg">
-                <div class="card-header bg-primary text-white text-center">
-                    Log Your Meal
-                </div>
-                <div class="card-body">
-                    <form method="post" enctype="multipart/form-data" action="{% url 'upload_image' %}">
-                        {% csrf_token %}
-                        <div class="mb-3">
-                            <label for="meal_image" class="form-label">Upload Meal Image:</label>
-                            <input type="file" name="image" id="meal_image" class="form-control">
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Log Meal</button>
-                    </form>
-                </div>
-            </div>
+<!-- Dashboard Layout -->
+<div class="dashboard-container">
+    <!-- Left Part: Display Section -->
+    <div class="display-section">
+        <!-- Welcome Message -->
+        <div class="mb-4" style="color: #FFFFFF;">
+            <h1>Hello, {{ user.first_name|default:user.username }} {% if user.first_name and user.last_name %}{{ user.last_name }}{% endif %}</h1>
+            <p style="color: #FFFFFF;">Let's track your meals today</p>
+            <p class="date-text">{{ today_date }}</p>
         </div>
 
-        <!-- Logged Meals Section -->
-        <div class="col-md-6">
-            <div class="card shadow-lg">
-                <div class="card-header bg-secondary text-white text-center">
-                    Logged Meals
-                </div>
-                <div class="card-body">
-                    {% if meals %}
-                    <div class="row">
-                        {% for meal in meals %}
-                        <div class="col-md-12 mb-3">
-                            <div class="card">
-                                <img src="{{ meal.image.image.url }}" class="card-img-top" alt="{{ meal.class_name }}">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ meal.class_name }}</h5>
-                                    
-                                    <!-- Nutritional Information List -->
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item"><strong>Calories:</strong> {{ meal.calories }} kcal</li>
-                                        <li class="list-group-item"><strong>Protein:</strong> {{ meal.protein }} g</li>
-                                        <li class="list-group-item"><strong>Carbohydrates:</strong> {{ meal.carbs }} g</li>
-                                        <li class="list-group-item"><strong>Fats:</strong> {{ meal.fats }} g</li>
-                                        <li class="list-group-item"><strong>Cholesterol:</strong> {{ meal.cholesterol }} mg</li>
-                                        <li class="list-group-item"><strong>Iron:</strong> {{ meal.iron }} mg</li>
-                                        <li class="list-group-item"><strong>Calcium:</strong> {{ meal.calcium }} mg</li>
-                                        <li class="list-group-item"><strong>Sodium:</strong> {{ meal.sodium }} mg</li>
-                                        <li class="list-group-item"><strong>Magnesium:</strong> {{ meal.magnesium }} mg</li>
-                                        <li class="list-group-item"><strong>Phosphorus:</strong> {{ meal.phosphorus }} mg</li>
-                                        <li class="list-group-item"><strong>Zinc:</strong> {{ meal.zinc }} mg</li>
-                                        <li class="list-group-item"><strong>Vitamin B12:</strong> {{ meal.vitaminb12 }} μg</li>
-                                        <li class="list-group-item"><strong>Folic Acid:</strong> {{ meal.folic_acid }} μg</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                    {% else %}
-                    <p class="text-center">No meals logged yet. Start by uploading a meal image!</p>
-                    {% endif %}
-                </div>
+        <!-- Meal Details Section -->
+        <div class="d-flex align-items-center">
+            {% if current_meal and current_meal.image.image.url %}
+            <img src="{{ current_meal.image.image.url }}" class="meal-image" alt="Meal Image">
+            {% else %}
+            <div class="meal-image text-muted d-flex justify-content-center align-items-center" style="background-color: #e9ecef;">
+                No Image
             </div>
+            {% endif %}
         </div>
+            <div class="meal-details" style="color: #FFFFFF;">
+                {% if current_meal %}
+                <h3>{{ current_meal.class_name|title }}</h3>
+                <p><strong>Calories:</strong> {{ current_meal.calories }} kcal</p>
+                <p><strong>Protein:</strong> {{ current_meal.protein }} g</p>
+                <p><strong>Carbs:</strong> {{ current_meal.carbs }} g</p>
+                <p><strong>Fats:</strong> {{ current_meal.fats }} g</p>
+                {% else %}
+                <p class="text-muted">No meal logged yet.</p>
+                {% endif %}
+            </div>
+
+        <!-- Navigation Buttons -->
+        <div class="mt-4">
+            <form method="POST" class="text-center">
+                {% csrf_token %}
+                <button type="submit" name="prev" class="btn btn-secondary me-2" {% if not has_previous %}disabled{% endif %}>
+                    Previous Meal
+                </button>
+                <button type="submit" name="next" class="btn btn-secondary" {% if not has_next %}disabled{% endif %}>
+                    Next Meal
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Right Part: Upload Section -->
+    <div class="upload-section">
+        <a href="{% url 'upload_image' %}" class="upload-meal-btn">
+            <div>+</div>
+            <div>Upload Meal</div>
+        </a>
     </div>
 </div>
 {% endblock %}
