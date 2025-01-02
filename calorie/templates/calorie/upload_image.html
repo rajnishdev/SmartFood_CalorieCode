@@ -5,10 +5,30 @@
       <div class="card">
         <div class="card-body">
           <h5 class="card-title text-center">Upload Image</h5>
-          <p class="text-muted text-center" style="color: white">
+          <p class="text-muted text-center">
             Please upload an image file in JPEG, PNG, or GIF format. Maximum
-            file size: 5MB.
+            file size: 10MB.
           </p>
+
+          {% if messages %}
+          <div
+            class="alert alert-danger alert-dismissible fade show"
+            role="alert"
+            style="color: red; background-color: rgba(255, 0, 0, 0.1)"
+          >
+            {% for message in messages %}
+            <p>{{ message }}</p>
+            {% endfor %}
+            <button
+              type="button"
+              class="close"
+              data-dismiss="alert"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          {% endif %}
           <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="mb-3">{{ form.as_p }}</div>
@@ -17,7 +37,7 @@
           <hr />
           <p class="text-muted text-center small">
             Supported file types: <strong>JPEG, PNG, GIF</strong><br />
-            Maximum file size: <strong>5MB</strong>
+            Maximum file size: <strong>10MB</strong>
           </p>
         </div>
       </div>

@@ -13,7 +13,7 @@ def fetch_nutrition(meal_name):
         "ingr": meal_name
     }
 
-    response = requests.get(API_URL, params=params)
+    response = requests.get(API_URL, params=params,timeout=20)
     if response.status_code == 200:
         data = response.json()
         return {

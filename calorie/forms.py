@@ -19,11 +19,23 @@ class DailyGoalForm(forms.ModelForm):
 
 
 
+# class ImageUploadForm(forms.ModelForm):
+#     class Meta:
+#         model = Image
+#         fields = ['image']
+        
+#         widgets = {
+#             'image': forms.ClearableFileInput(attrs={'class': 'form-control', "type": "file"}),
+#         }
 class ImageUploadForm(forms.ModelForm):
     class Meta:
         model = Image
         fields = ['image']
-        
-        widgets = {
-            'image': forms.ClearableFileInput(attrs={'class': 'form-control', "type": "file"}),
-        }
+
+    def clean_image(self):
+        image = self.cleaned_data.get('image')
+        max_file_size = 10 * 1024 * 1024  # 10 MB
+
+        if image.size > max_file_size:
+            raise forms.ValidationError("Image file size exceeds 10 MB limit.")
+        return image

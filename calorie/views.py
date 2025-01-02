@@ -1,10 +1,12 @@
 import base64
 import io
-import matplotlib. pyplot as plt
+import matplotlib
+import matplotlib.pyplot as plt
+matplotlib.use('Agg')
 from matplotlib import use
 from django.http import HttpResponse
 from matplotlib.figure import Figure
-
+import numpy as np
 from django.shortcuts import render, redirect
 from django.urls import path
 from django.contrib.auth.decorators import login_required
@@ -14,6 +16,8 @@ from django.shortcuts import get_object_or_404
 from transformers import ViTImageProcessor, ViTForImageClassification
 from PIL import Image as PilImage
 from . import utils
+from django.contrib import messages
+
 # Create your views here.
 
 @login_required
@@ -122,9 +126,20 @@ def upload_image(request):
             image_instance.user = request.user
             image_instance.save()
 
+            # Check the image size (in bytes)
+            image_file = request.FILES['image']
+            image_size = image_file.size  # Size in bytes
+
+            if image_size > 10 * 1024 * 1024:  # 10 MB in bytes
+                messages.error(request, "The uploaded image is too large. Please upload an image smaller than 10 MB.")
+                return redirect('upload_image')  # Redirect to the same page to show the error message
+
+            image_instance.save()
+
             image_file = image_instance.image
             image_path = image_file.path
             pil_image = PilImage.open(image_path)
+
 
             # Make prediction here (pre-process the image and make prediction with your model)
             processor = ViTImageProcessor.from_pretrained('google/vit-base-patch16-224')
@@ -135,8 +150,7 @@ def upload_image(request):
             logits = outputs.logits
             predicted_class_idx = logits.argmax(-1).item()
             class_name = model.config.id2label[predicted_class_idx]
-
-            nutrition_data = utils.fetch_nutrition(f"{len(class_name)} {class_name}")
+            nutrition_data = utils.fetch_nutrition(f"{1} {class_name}")
             calories = nutrition_data["calories"]
             protein = nutrition_data["protein"]
             carbs = nutrition_data["carbs"]
@@ -158,66 +172,77 @@ def upload_image(request):
 
     return render(request, 'calorie/upload_image.html', {'form': form})
 
+def generate_chart(chart_type, labels, values, **kwargs):
+    plt.figure()
+    if chart_type == "bar":
+        plt.bar(labels, values, color=kwargs.get("colors", "blue"))
+        plt.title(kwargs.get("title", "Bar Chart"))
+    elif chart_type == "pie":
+        plt.pie(values, labels=labels, autopct='%1.1f%%', startangle=90, colors=kwargs.get("colors"))
+        plt.title(kwargs.get("title", "Pie Chart"))
+    elif chart_type == "line":
+        plt.plot(labels, values, marker='o', linestyle='--', color=kwargs.get("color", "blue"))
+        plt.title(kwargs.get("title", "Line Chart"))
+    elif chart_type == "donut":
+        wedges, texts, autotexts = plt.pie(values, labels=labels, autopct='%1.1f%%', startangle=90, colors=kwargs.get("colors"))
+        plt.gca().add_artist(plt.Circle((0, 0), 0.70, fc='white'))
+        plt.title(kwargs.get("title", "Donut Chart"))
+
+    buffer = io.BytesIO()
+    plt.savefig(buffer, format="png")
+    buffer.seek(0)
+    chart_data = base64.b64encode(buffer.getvalue()).decode('utf-8')
+    buffer.close()
+    plt.close()
+    return chart_data
+
+# Function to handle large images
+def handle_large_image(image_path, max_size=(1024, 1024)):
+    pil_image = PilImage.open(image_path)
+    pil_image.thumbnail(max_size)  # Resize to fit within max dimensions
+    pil_image.save(image_path)  # Overwrite with resized version
+    return pil_image
 
 
 def meal_detail(request):
-    data = NutritionData.objects.last()
+    # Fetch the latest NutritionData object
+    data = NutritionData.objects.filter(user=request.user).last()
+    if not data:
+        messages.error(request, "No nutrition data available.")
+        return redirect("upload_image")
 
-    # Data preparation
-    labels = ['Calories', 'Protein', 'Carbs', 'Fats', 'Cholestrol', 'Iron', 'Calcium', 'Sodium', 'Magnesium']
-    values = [data.calories, data.protein, data.carbs, data.fats, data.cholestrol, data.iron, data.calcium, data.sodium, data.magnesium]
+    # Labels and values
+    labels = ['Calories', 'Protein', 'Carbs', 'Fats', 'Cholesterol', 'Iron', 'Calcium', 'Sodium', 'Magnesium']
+    raw_values = [
+        data.calories, data.protein, data.carbs, data.fats, data.cholestrol,
+        data.iron, data.calcium, data.sodium, data.magnesium
+    ]
 
-    # Generate the bar chart
-    plt.bar(labels, values, color=['red', 'blue', 'green', 'orange', 'pink', 'yellow', 'orange', 'violet'])
-    plt.title('Nutrition Overview - Bar Chart')
-    plt.ylabel('Amount')
-    plt.xlabel('Nutrients')
-    plt.xticks(rotation=45)
+    # Replace None, NaN, or any invalid values with 0 and ensure values are valid floats
+    values = []
+    for val in raw_values:
+        if val is None or (isinstance(val, float) and np.isnan(val)):
+            values.append(0)
+        else:
+            values.append(float(val))  # Ensure it's a float value
 
-    buffer = io.BytesIO()
-    plt.savefig(buffer, format='png')
-    buffer.seek(0)
-    bar_chart = base64.b64encode(buffer.getvalue()).decode('utf-8')
-    buffer.close()
-    plt.close()
+    # Debug: Log values before charting
+    print("Debug - Processed Chart Values:", values)
 
-    # Generate the pie chart
-    plt.pie(values, labels=labels, autopct='%1.1f%%', startangle=90, colors=['red', 'blue', 'green', 'orange', 'pink', 'yellow', 'purple', 'violet', 'cyan'])
-    plt.title('Nutrition Overview - Pie Chart')
+    # Check for any zeros or NaNs in the values before chart generation
+    # If any value is zero, we will set it to a small value (e.g., 1) to avoid division by zero
+    safe_values = [1e-6 if val == 0 or np.isnan(val) else val for val in values]
 
-    buffer = io.BytesIO()
-    plt.savefig(buffer, format='png')
-    buffer.seek(0)
-    pie_chart = base64.b64encode(buffer.getvalue()).decode('utf-8')
-    buffer.close()
-    plt.close()
-
-    # Generate the line chart
-    plt.plot(labels, values, marker='o', color='blue', linestyle='--')
-    plt.title('Nutrition Overview - Line Chart')
-    plt.ylabel('Amount')
-    plt.xlabel('Nutrients')
-    plt.xticks(rotation=45)
-
-    buffer = io.BytesIO()
-    plt.savefig(buffer, format='png')
-    buffer.seek(0)
-    line_chart = base64.b64encode(buffer.getvalue()).decode('utf-8')
-    buffer.close()
-    plt.close()
-
-    # Generate the donut chart
-    colors = ['red', 'blue', 'green', 'orange', 'pink', 'yellow', 'purple', 'violet', 'cyan']
-    wedges, texts, autotexts = plt.pie(values, labels=labels, autopct='%1.1f%%', startangle=90, colors=colors)
-    plt.title('Nutrition Overview - Donut Chart')
-    plt.gca().add_artist(plt.Circle((0, 0), 0.70, fc='white'))  # Add a white circle in the center to create a donut effect
-
-    buffer = io.BytesIO()
-    plt.savefig(buffer, format='png')
-    buffer.seek(0)
-    donut_chart = base64.b64encode(buffer.getvalue()).decode('utf-8')
-    buffer.close()
-    plt.close()
+    # Generate charts with safe values
+    try:
+        bar_chart = generate_chart("bar", labels, safe_values, colors=['red', 'blue', 'green', 'orange', 'pink', 'yellow', 'purple', 'violet'], title="Nutrition Overview - Bar Chart")
+        pie_chart = generate_chart("pie", labels, safe_values, colors=['red', 'blue', 'green', 'orange', 'pink', 'yellow', 'purple', 'violet'], title="Nutrition Overview - Pie Chart")
+        line_chart = generate_chart("line", labels, safe_values, color='blue', title="Nutrition Overview - Line Chart")
+        donut_chart = generate_chart("donut", labels, safe_values, colors=['red', 'blue', 'green', 'orange', 'pink', 'yellow', 'purple', 'violet'], title="Nutrition Overview - Donut Chart")
+    except Exception as e:
+        print("Error during chart generation:", str(e))
+        messages.info(request, "Error generating charts.")
+        return redirect("upload_image")
 
     return render(request, "calorie/meal_detail.html", {
         "data": data,
@@ -226,3 +251,7 @@ def meal_detail(request):
         "line_chart": line_chart,
         "donut_chart": donut_chart
     })
+
+
+
+
