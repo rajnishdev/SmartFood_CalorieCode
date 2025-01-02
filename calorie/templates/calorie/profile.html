@@ -1,0 +1,50 @@
+{% extends 'calorie/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center" style="color: #FFFFFF;">Profile</h1>
+    <div class="card mt-4">
+        <div class="card-body">
+            <h5 class="card-title">User Details</h5>
+            <form method="POST" action="#">
+                {% csrf_token %}
+                <ul class="list-group list-group-flush">
+                    <!-- Username (Display Only) -->
+                    <li class="list-group-item"><strong>Username:</strong> {{ user.username }}</li>
+                    <li class="list-group-item">
+                        <strong>Email:</strong> {{ user.email }}
+                    </li>
+                    
+                    <!-- Editable First Name -->
+                    <li class="list-group-item">
+                        <strong>First Name:</strong> 
+                        <input type="text" class="form-control d-inline-block" name="first_name" value="{{ user.first_name }}" style="width: auto;">
+                        <button type="button" class="btn btn-warning btn-sm ms-2" onclick="enableEdit('first_name')">Edit</button>
+                    </li>
+
+                    <!-- Editable Last Name -->
+                    <li class="list-group-item">
+                        <strong>Last Name:</strong> 
+                        <input type="text" class="form-control d-inline-block" name="last_name" value="{{ user.last_name }}" style="width: auto;">
+                        <button type="button" class="btn btn-warning btn-sm ms-2" onclick="enableEdit('last_name')">Edit</button>
+                    </li>
+                </ul>
+
+                <!-- Save Button -->
+                <div class="text-center mt-3">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Inline JS to enable editing -->
+<script>
+    function enableEdit(fieldName) {
+        const inputField = document.querySelector(`[name="${fieldName}"]`);
+        inputField.disabled = false;
+        inputField.focus();  // Automatically focus on the input field when editing
+    }
+</script>
+{% endblock %}

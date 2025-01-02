@@ -148,4 +148,4 @@ EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASS")  # Your App Password
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'landing'
 #LOGIN_REDIRECT_URL = '/'
-LOGIN_REDIRECT_URL = 'goals'  # This will first check for goals
+LOGIN_REDIRECT_URL = 'goals' 

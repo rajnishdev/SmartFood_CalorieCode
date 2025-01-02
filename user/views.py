@@ -52,7 +52,7 @@ def signup(request):
 
             utils.send_verification_email(user, request)
             messages.success(request, 'Account created! Please check your email to verify your account.')
-            return redirect('goals')
+            return redirect('login')
     else:
         form = forms.RegistrationForm()
     return render(request, 'user/signup.html', {'form': form})

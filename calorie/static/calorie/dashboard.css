@@ -1,0 +1,75 @@
+/* Full Screen Partition */
+.dashboard-container {
+  display: flex;
+  height: 80vh; /* Adjust based on your preference */
+}
+
+/* Left Section: Display */
+.display-section {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+/* Right Section: Upload Button */
+.upload-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Slightly light background for separation */
+}
+
+/* Upload Meal Button */
+.upload-meal-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #0d6efd; /* Bootstrap Primary Color */
+  color: white;
+  font-size: 20px;
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  text-decoration: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.upload-meal-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* General Styling */
+.meal-image {
+  max-height: 250px;
+  max-width: 250px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-right: 20px;
+  background-color: rgba(233, 236, 239, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  color: #6c757d;
+}
+
+.meal-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.text-muted {
+  margin-top: 10px;
+  color: #ffffff;
+}
+.date-text {
+  color: white;
+}

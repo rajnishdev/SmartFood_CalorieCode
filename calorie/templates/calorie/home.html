@@ -1,47 +1,86 @@
-{% extends 'calorie/base.html' %}
-{% block content %}
-<div class="container-fluid mt-3">
-  <div class="dashboard-row">
-    <!-- Recent Activity -->
-    <div class="col">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title text-center">Recent Activity</h5>
-          <ul class="list-group">
-            <li class="list-group-item">Uploaded: {{ data.class_name }}</li>
-            <li class="list-group-item">Calories Consumed: {{data.calories}} kcal</li>
-          </ul>
-          <a href="#activity" class="btn btn-success w-100 mt-3">View All</a>
-        </div>
-      </div>
+{% extends 'calorie/base.html' %} {% block content %}
+<!-- Dashboard Layout -->
+<div class="dashboard-container">
+  <!-- Left Part: Display Section -->
+  <div class="display-section">
+    <!-- Welcome Message -->
+    <div class="mb-4" style="color: #ffffff">
+      <h1>Hello, {{ user.username }}</h1>
+      <p style="color: #ffffff">Let's track your meals today</p>
+      <p class="date-text">{{ today_date }}</p>
     </div>
 
-    <!-- Daily Goals -->
-    <div class="col">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title text-center">Daily Goals</h5>
-          <p>Calories: <strong>{{ daily_goal.calories }}</strong></p>
-          <p>Protein: <strong>{{ daily_goal.protein }}</strong>, Carbs: <strong>{{ daily_goal.carbs }}</strong>, Fats: <strong>{{ daily_goal.fats }}</strong></p>
-          <a href="{% url 'goals' %}" class="btn btn-primary w-100" style="margin-top: 60px;">Edit Goals</a>
-        </div>
+    <!-- Meal Details Section -->
+    <div class="d-flex align-items-center">
+      {% if current_meal and current_meal.image.image.url %}
+      <img
+        src="{{ current_meal.image.image.url }}"
+        class="meal-image"
+        alt="Meal Image"
+      />
+      {% else %}
+      <div
+        class="meal-image text-muted d-flex justify-content-center align-items-center"
+        style="background-color: #e9ecef"
+      >
+        No Image
       </div>
+      {% endif %}
+    </div>
+    <div class="meal-details" style="color: #ffffff">
+      {% if current_meal %}
+      <h3>{{ current_meal.class_name|title }}</h3>
+      <p><strong>Calories:</strong> {{ current_meal.calories }} kcal</p>
+      <p><strong>Protein:</strong> {{ current_meal.protein }} g</p>
+      <p><strong>Carbs:</strong> {{ current_meal.carbs }} g</p>
+      <p><strong>Fats:</strong> {{ current_meal.fats }} g</p>
+      {% else %}
+      <p class="text-muted">No meal logged yet.</p>
+      {% endif %}
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="mt-4">
+      <form method="POST" class="text-center">
+        {% csrf_token %}
+        <button
+          type="submit"
+          name="prev"
+          class="btn btn-secondary me-2"
+          {%
+          if
+          not
+          has_previous
+          %}disabled{%
+          endif
+          %}
+        >
+          Previous Meal
+        </button>
+        <button
+          type="submit"
+          name="next"
+          class="btn btn-secondary"
+          {%
+          if
+          not
+          has_next
+          %}disabled{%
+          endif
+          %}
+        >
+          Next Meal
+        </button>
+      </form>
     </div>
   </div>
 
-  <!-- Second Row -->
-  <div class="dashboard-row mt-5">
-    <!-- Nutrition Overview -->
-    <div class="col">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title text-center">Nutrition Overview</h5>
-          <div class="chart-placeholder">
-            Chart Placeholder
-          </div>
-        </div>
-      </div>
-    </div>
+  <!-- Right Part: Upload Section -->
+  <div class="upload-section">
+    <a href="{% url 'upload_image' %}" class="upload-meal-btn">
+      <div>+</div>
+      <div>Upload Meal</div>
+    </a>
   </div>
 </div>
 {% endblock %}

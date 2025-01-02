@@ -253,5 +253,10 @@ def meal_detail(request):
     })
 
 
-
+@login_required
+def profile(request):
+    """
+    View for the user's profile page.
+    """
+    return render(request, 'calorie/profile.html', {'user': request.user})
 
