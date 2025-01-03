@@ -272,27 +272,9 @@ nav {
   text-align: center;
 }
 
-.sidenav {
-  height: 100%;
-  width: 0;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  background-color: #343a40;
-  color: white;
-  overflow-x: hidden;
-  transition: 0.3s;
-  padding-top: 20px;
-}
-
 .content {
   transition: margin-left 0.3s;
   padding: 20px;
-}
-
-.sidenav.open {
-  width: 250px;
 }
 
 .content.shift {

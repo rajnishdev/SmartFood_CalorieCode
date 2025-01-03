@@ -1,33 +1,55 @@
-{% extends 'calorie/base.html' %} {% block content %}
-<!-- Dashboard Layout -->
+{% extends 'calorie/base.html' %}
+{% block content %}
 <div class="dashboard-container">
-  <!-- Left Part: Display Section -->
-  <div class="display-section">
-    <!-- Welcome Message -->
-    <div class="mb-4" style="color: #ffffff">
-      <h1>Hello, {{ user.username }}</h1>
-      <p style="color: #ffffff">Let's track your meals today</p>
-      <p class="date-text">{{ today_date }}</p>
+  <!-- Left Section -->
+  <div class="dashboard-section left-section">
+    <h1 class="text-white">Hello, {{ user.username }}</h1>
+    <p class="text-white">Let's track your meals today</p>
+    <p class="date-text">{{ today_date }}</p>
+  </div>
+
+  <!-- Combined Section (Image, Buttons, Details) -->
+  <div class="dashboard-section combined-section">
+    <!-- Left Subsection: Image and Buttons -->
+    <div class="image-buttons-container">
+      <div class="image-container">
+        {% if current_meal and current_meal.image.image.url %}
+        <img
+          src="{{ current_meal.image.image.url }}"
+          class="meal-image"
+          alt="Meal Image"
+        />
+        {% else %}
+        <div class="meal-placeholder">No Image</div>
+        {% endif %}
+      </div>
+      <div class="navigation-buttons mt-3">
+        <form method="POST">
+          {% csrf_token %}
+          <button
+            type="submit"
+            name="action"
+            value="next"
+            class="btn btn-secondary"
+            {% if not has_next %}disabled{% endif %}
+          >
+            Previous Meal
+          </button>
+          <button
+            type="submit"
+            name="action"
+            value="prev"
+            class="btn btn-secondary me-2"
+            {% if not has_previous %}disabled{% endif %}
+          >
+            Next Meal
+          </button>
+        </form>
+      </div>
     </div>
 
-    <!-- Meal Details Section -->
-    <div class="d-flex align-items-center">
-      {% if current_meal and current_meal.image.image.url %}
-      <img
-        src="{{ current_meal.image.image.url }}"
-        class="meal-image"
-        alt="Meal Image"
-      />
-      {% else %}
-      <div
-        class="meal-image text-muted d-flex justify-content-center align-items-center"
-        style="background-color: #e9ecef"
-      >
-        No Image
-      </div>
-      {% endif %}
-    </div>
-    <div class="meal-details" style="color: #ffffff">
+    <!-- Right Subsection: Meal Details -->
+    <div class="meal-details-container">
       {% if current_meal %}
       <h3>{{ current_meal.class_name|title }}</h3>
       <p><strong>Calories:</strong> {{ current_meal.calories }} kcal</p>
@@ -38,38 +60,13 @@
       <p class="text-muted">No meal logged yet.</p>
       {% endif %}
     </div>
-
-    <!-- Navigation Buttons -->
-    <div class="mt-4">
-      <form method="POST" class="text-center">
-        {% csrf_token %}
-        <button
-            type="submit"
-            name="action"
-            value="next"
-            class="btn btn-secondary"
-            {% if not has_next %}disabled{% endif %}
-        >
-            Previous Meal
-        </button>
-        <button
-            type="submit"
-            name="action"
-            value="prev"
-            class="btn btn-secondary me-2"
-            {% if not has_previous %}disabled{% endif %}
-        >
-            Next Meal
-        </button>
-      </form>
-    </div>
   </div>
 
-  <!-- Right Part: Upload Section -->
-  <div class="upload-section">
+  <!-- Right Section -->
+  <div class="dashboard-section right-section">
     <a href="{% url 'upload_image' %}" class="upload-meal-btn">
-      <div>+</div>
-      <div>Upload Meal</div>
+      <div class="upload-icon">+</div>
+      <div class="upload-text">Upload Meal</div>
     </a>
   </div>
 </div>
