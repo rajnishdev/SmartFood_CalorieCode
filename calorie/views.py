@@ -17,18 +17,42 @@ from transformers import ViTImageProcessor, ViTForImageClassification
 from PIL import Image as PilImage
 from . import utils
 from django.contrib import messages
-
+from django.core.paginator import Paginator
+from django.utils import timezone
 # Create your views here.
 
 @login_required
 def home(request):
-    daily_goal = DailyGoal.objects.filter(user = request.user).first()
-    data = NutritionData.objects.last()
+    user_meals = NutritionData.objects.filter(user=request.user).order_by('-id')  # Fetch meals in reverse order
+    paginator = Paginator(user_meals, 1)  # Show one meal at a time
+
+    # Get the current page number from the session or default to 1
+    page_number = request.session.get('current_page', 1)
+    action = request.POST.get('action')
+
+    # Adjust page number based on action
+    if action == 'prev' and page_number > 1:
+        page_number -= 1  # Decrease page number for 'prev'
+    elif action == 'next' and page_number < paginator.num_pages:
+        page_number += 1  # Increase page number for 'next'
+
+    # Save the current page in session
+    request.session['current_page'] = page_number
+
+    # Get the current meal
+    current_meal = paginator.page(page_number).object_list.first()
+
+    # Format the current date as 'Jan 02 2025'
+    today_date = timezone.now().strftime('%b %d %Y')
+
     context = {
-        'daily_goal': daily_goal,
-        "data": data
+        'current_meal': current_meal,
+        'has_previous': page_number > 1,
+        'has_next': page_number < paginator.num_pages,
+        'today_date': today_date,
     }
-    return render(request,'calorie/home.html', context)
+
+    return render(request, 'calorie/home.html', context)
 
 def calculate_bmi(weight, height):
     height_m = height / 100

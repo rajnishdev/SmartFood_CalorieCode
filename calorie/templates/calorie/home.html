@@ -44,32 +44,22 @@
       <form method="POST" class="text-center">
         {% csrf_token %}
         <button
-          type="submit"
-          name="prev"
-          class="btn btn-secondary me-2"
-          {%
-          if
-          not
-          has_previous
-          %}disabled{%
-          endif
-          %}
+            type="submit"
+            name="action"
+            value="next"
+            class="btn btn-secondary"
+            {% if not has_next %}disabled{% endif %}
         >
-          Previous Meal
+            Previous Meal
         </button>
         <button
-          type="submit"
-          name="next"
-          class="btn btn-secondary"
-          {%
-          if
-          not
-          has_next
-          %}disabled{%
-          endif
-          %}
+            type="submit"
+            name="action"
+            value="prev"
+            class="btn btn-secondary me-2"
+            {% if not has_previous %}disabled{% endif %}
         >
-          Next Meal
+            Next Meal
         </button>
       </form>
     </div>
