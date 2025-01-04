@@ -1,5 +1,5 @@
 # **Setup**
-```
+```bash
 git clone https://github.com/rajnishdev/SmartFood_CalorieCode.git
 cd SmartFood_CalorieCode
 
@@ -15,4 +15,5 @@ EMAIL_ADDRESS=YOUR_EMAIL_ADDRESS
 EMAIL_PASS=GOOGLE_APP_PASS
 API_APP_KEY=YOUR_API_APP_KEY
 API_APP_ID=YOUR_APP_ID
+pdf_path=YOUR_PDF_PATH (To setup please refer: https://youtu.be/PFUsPlyMB00?si=QwHGRsmWYcpcRQ1m)
 ```
