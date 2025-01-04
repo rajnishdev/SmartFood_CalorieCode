@@ -52,16 +52,28 @@
             {% endif %}
         </div>
 
-        <!-- Name -->
+        <!-- First Name -->
         <div class="form-group">
-            <label for="id_name" class="form-label"style="margin-left: -361px;">Name</label>
-            <input type="text" name="name" id="id_name" class="form-control" value="{{ form.name.value|default_if_none:'' }}">
-            {% if form.name.errors %}
+            <label class="form-label"style="margin-left: -330px;">First Name</label>
+            <input type="text" name="first_name" class="form-control" value="{{ form.first_name.value|default_if_none:'' }}">
+            {% if form.first_name.errors %}
             <div class="text-danger">
-                {{ form.name.errors|join:", " }}
+                {{ form.first_name.errors|join:", " }}
             </div>
             {% endif %}
         </div>
+
+        <!-- Last Name -->
+        <div class="form-group">
+            <label class="form-label"style="margin-left: -330px;">Last Name</label>
+            <input type="text" name="last_name" class="form-control" value="{{ form.last_name.value|default_if_none:'' }}">
+            {% if form.last_name.errors %}
+            <div class="text-danger">
+                {{ form.last_name.errors|join:", " }}
+            </div>
+            {% endif %}
+        </div>
+
 
         <!-- Age -->
         <div class="form-group">
@@ -119,7 +131,7 @@
         </div>
 
         <!-- Submit Button -->
-        <button type="submit" class="btn btn-primary btn-block">Signup</button>
+        <button type="submit" class="btn btn-primary btn-block">Register</button>
 
         <!-- Login Redirect Link -->
         <h6 class="mt-2 text-center">

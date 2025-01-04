@@ -44,7 +44,8 @@ def signup(request):
             profile, created = UserProfile.objects.get_or_create(
                 user=user,
                 defaults={
-                    'name': form.cleaned_data['name'],
+                    'first_name': form.cleaned_data["first_name"],
+                    'last_name': form.cleaned_data["last_name"],
                     'age': form.cleaned_data['age'],
                     'gender': form.cleaned_data['gender']
                 }

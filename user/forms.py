@@ -8,10 +8,8 @@ class RegistrationForm(UserCreationForm):
     email = forms.EmailField(
         error_messages={'required': 'Enter your email address.'}
     )
-    name = forms.CharField(
-        max_length=100,
-        error_messages={'required': 'Enter your full name.'}
-    )
+    first_name = forms.CharField(max_length=50, error_messages={"required": "Enter your first name"})
+    last_name = forms.CharField(max_length=50, error_messages={"required": "Enter your last name"})
     age = forms.IntegerField(
         error_messages={'required': 'Enter your age.'}
     )
@@ -23,7 +21,7 @@ class RegistrationForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ["username", "email", "name", "age", "gender", "password1", "password2"]
+        fields = ["first_name", "last_name", "username", "email", "age", "gender", "password1", "password2"]
         error_messages = {
             'username': {
                 'required': 'Please enter a username.',
