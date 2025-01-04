@@ -1,5 +1,6 @@
 import base64
 import io
+import os
 import matplotlib
 import matplotlib.pyplot as plt
 matplotlib.use('Agg')
@@ -374,7 +375,7 @@ def generate_report(request, format='pdf'):
 
     if format == 'pdf':
         # Ensure correct wkhtmltopdf path
-        wkhtmltopdf_path = r'C:\Users\11ana\Downloads\wkhtmltox-0.12.6-1.mxe-cross-win64\wkhtmltox\bin\wkhtmltopdf.exe'
+        wkhtmltopdf_path = os.environ.get("pdf_path")
         config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
 
         # Render HTML template with the user data, daily goals, and nutrition data
