@@ -19,12 +19,16 @@
       <a class="navbar-brand">Food Diary</a>
       <div class="navbar-nav">
         <a class="nav-link" href="{% url 'home' %}">Log Meals</a>
-        <a class="nav-link" href="#"
+        <a class="nav-link" href="{% url 'generate_report' 'pdf' %}"
           >Trends and Reports</a
         >
         <a class="nav-link" href="#"
           >Recommendations</a
         >
+        <!-- Conditional Visualization Option -->
+        {% if request.session.visualization_available %}
+        <a class="nav-link" href="{% url 'visualization' %}">Visualization</a>
+        {% endif %}
 
         <div class="nav-item dropdown">
           <a

@@ -14,6 +14,7 @@ def fetch_nutrition(meal_name):
     }
 
     response = requests.get(API_URL, params=params,timeout=20)
+    print(response)
     if response.status_code == 200:
         data = response.json()
         return {

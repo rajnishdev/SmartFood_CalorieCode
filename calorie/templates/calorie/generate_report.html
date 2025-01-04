@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutrition Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        table, th, td { border: 1px solid #ccc; }
+        th, td { padding: 10px; text-align: left; }
+        h1, h2, h3 { color: #333; }
+    </style>
+</head>
+<body>
+    <h1 style="margin-left: 300px;">Nutrition Report</h1>
+    <h2>User Details</h2>
+    <p><strong>Name:</strong> {{ user_details.name }}</p>
+    <p><strong>Email:</strong> {{ user_details.email }}</p>
+
+    {% if daily_goal %}
+        <h2>Daily Goals</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Weight (kg)</th>
+                    <th>Height (cm)</th>
+                    <th>Calories (kcal)</th>
+                    <th>Protein (g)</th>
+                    <th>Carbs (g)</th>
+                    <th>Fats (g)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ daily_goal.weight }}</td>
+                    <td>{{ daily_goal.height }}</td>
+                    <td>{{ daily_goal.calories }}</td>
+                    <td>{{ daily_goal.protein }}</td>
+                    <td>{{ daily_goal.carbs }}</td>
+                    <td>{{ daily_goal.fats }}</td>
+                </tr>
+            </tbody>
+        </table>
+    {% else %}
+        <p>No daily goals set.</p>
+    {% endif %}
+
+    <h2>Nutritional Data</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Date and Time</th>
+                <th>Food Item</th>
+                <th>Calories (kcal)</th>
+                <th>Protein (g)</th>
+                <th>Carbs (g)</th>
+                <th>Fats (g)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in nutrition_data %}
+                <tr>
+                    <td>{{ item.updated_at }}</td>
+                    <td>{{ item.class_name }}</td>
+                    <td>{{ item.calories }}</td>
+                    <td>{{ item.protein }}</td>
+                    <td>{{ item.carbs }}</td>
+                    <td>{{ item.fats }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Summary</h2>
+    <p>This report provides a detailed view of your daily nutritional goals and meal intake data.</p>
+</body>
+</html>

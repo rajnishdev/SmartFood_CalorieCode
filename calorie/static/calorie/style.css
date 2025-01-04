@@ -160,51 +160,14 @@ nav {
   transform: translateX(5px);
 }
 
-.card {
-  border: none;
-  border-radius: 15px;
-  color: white;
-  background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);
-  overflow: hidden;
-  position: relative;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-.card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
-  filter: brightness(1.1);
-}
-
-/* Subtle Background Effect */
-.card::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  width: 200px;
-  height: 200%;
-  background: radial-gradient(
-    circle,
-    rgba(255, 255, 255, 0.15),
-    transparent 70%
-  );
-  animation: subtleBackgroundAnim 8s infinite linear;
-  z-index: 1;
-}
-
-@keyframes subtleBackgroundAnim {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
 .card-title {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   font-weight: bold;
   margin-bottom: 20px;
+  color: white;
+}
+.card.meal-details {
+  width: 600px;
 }
 
 /* Dashboard Row */
@@ -221,15 +184,6 @@ nav {
   display: flex;
   flex-direction: column;
 }
-.card {
-  flex-grow: 1; /* Ensures cards stretch to the same height */
-}
-/* Buttons */
-.btn {
-  border-radius: 5px;
-  padding: 10px 20px;
-  font-weight: bold;
-}
 
 .btn-primary {
   background-color: #ffffff;
@@ -242,91 +196,21 @@ nav {
   background-color: #0056d6;
   color: white;
 }
-
-.btn-success {
-  background-color: #ffffff;
-  color: #28a745;
-  border: none;
-  transition: background 0.3s ease, color 0.3s ease;
-}
-
-.btn-success:hover {
-  background-color: #28a745;
-  color: white;
-}
-
-/* Chart Placeholder */
-.chart-placeholder {
-  height: 150px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1rem;
-  text-transform: uppercase;
-  color: white;
-}
-
 .list-group {
   text-align: center;
 }
 
-.content {
-  transition: margin-left 0.3s;
-  padding: 20px;
-}
-
-.content.shift {
-  margin-left: 250px;
-}
-/* Styling for the menu button */
-#toggle-btn {
-  background-color: #343a40;
-  color: white;
-  border: solid white;
-  padding: 11px 18px;
-  font-size: 24px;
-  cursor: pointer;
-  border-radius: 8px;
-  transition: all 0.3s ease-in-out;
-  border-radius: 8px;
-}
-/* Hover and animation effects for the menu button */
-#toggle-btn:hover {
-  background-color: #495057;
-  transform: scale(1.1);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  border-color: #4fd013;
-}
-/* Active state with a slight bounce animation */
-#toggle-btn:active {
-  transform: scale(0.95);
-  animation: bounce 0.2s ease forwards;
-}
-
-@keyframes bounce {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-/* General Styles */
 body {
   font-family: "Arial", sans-serif;
 }
 
 .card {
-  margin-top: 90px;
-  border: none;
+  margin-top: 25px;
+  border: solid;
+  border-color:rgb(255, 187, 0) ;
   border-radius: 15px;
   color: white;
-  background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);
+  background-color: rgba(215, 115, 48, 0.362);
   overflow: hidden;
   position: relative;
   transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
@@ -343,9 +227,8 @@ body {
 }
 
 .card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
-  filter: brightness(1.1);
+  transform: translateY(-5px);
+  background: rgba(158, 123, 34, 0.452);
 }
 
 /* Subtle Background Effect */
@@ -354,7 +237,7 @@ body {
   position: absolute;
   top: -50%;
   left: -50%;
-  width: 200%;
+  width: 500px;
   height: 200%;
   background: radial-gradient(
     circle,
@@ -380,12 +263,6 @@ body {
   padding: 20px;
 }
 
-.card-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
 /* Dashboard Row */
 .dashboard-row {
   display: flex;
@@ -400,54 +277,75 @@ body {
   display: flex;
   flex-direction: column;
 }
-.card {
-  flex-grow: 1; /* Ensures cards stretch to the same height */
-}
-/* Buttons */
-.btn {
-  border-radius: 5px;
-  padding: 10px 20px;
-  font-weight: bold;
-}
 
-.btn-primary {
-  background-color: #ffffff;
-  color: #0056d6;
-  border: none;
-  transition: background 0.3s ease, color 0.3s ease;
-}
-
-.btn-primary:hover {
-  background-color: #0056d6;
-  color: white;
-}
-
-.btn-success {
-  background-color: #ffffff;
-  color: #28a745;
-  border: none;
-  transition: background 0.3s ease, color 0.3s ease;
-}
-
-.btn-success:hover {
-  background-color: #28a745;
-  color: white;
-}
-
-/* Chart Placeholder */
-.chart-placeholder {
-  height: 150px;
-  background: rgba(255, 255, 255, 0.2);
+.feature-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  padding: 2rem;
   border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1rem;
-  text-transform: uppercase;
-  color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  transition: transform 0.3s ease, background 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--white);
+  margin-top: 100px;
 }
 
-.list-group {
-  text-align: center;
+.feature-card:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.2);
 }
-/* Add this to your CSS file */
+
+/* Ensuring the upload section is responsive */
+@media (max-width: 767px) {
+  .feature-card {
+      padding: 1.5rem;
+  }
+}
+
+/* Styling for form fields inside .feature-card */
+.feature-card form {
+  margin-bottom: 1.5rem;
+}
+
+/* Alert box styling */
+.alert {
+  color: red;
+  background-color: rgba(255, 0, 0, 0.1);
+}
+
+.alert .close {
+  color: red;
+}
+
+/* Styling the text under the form */
+.text-muted {
+  font-size: 0.880rem;
+  line-height: 1.5;
+  color: white !important;
+}
+/* Ensuring square aspect ratio for the chart cards */
+.square-card {
+  width: 100%;
+  height: 0;
+  padding-bottom: 100%; /* 1:1 aspect ratio (square) */
+  position: relative;
+}
+
+.square-card .card-body {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.square-card img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}

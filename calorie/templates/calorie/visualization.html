@@ -1,0 +1,135 @@
+{% extends 'calorie/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+  <h5 class="text-center mb-4">Nutrition Overview Charts</h5>
+  
+  <!-- Grid for Chart Display -->
+  <div class="row g-4">
+
+    <!-- Bar Chart Rectangle -->
+    <div class="col-12 col-md-2">
+      <div class="card" onclick="showChart('bar')">
+        <div class="card-body text-center">
+          <h5 class="card-title">Bar Chart</h5>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pie Chart Rectangle -->
+    <div class="col-12 col-md-2">
+      <div class="card" onclick="showChart('pie')">
+        <div class="card-body text-center">
+          <h5 class="card-title">Pie Chart</h5>
+        </div>
+      </div>
+    </div>
+
+    <!-- Line Chart Rectangle -->
+    <div class="col-12 col-md-2">
+      <div class="card" onclick="showChart('line')">
+        <div class="card-body text-center">
+          <h5 class="card-title">Line Chart</h5>
+        </div>
+      </div>
+    </div>
+
+    <!-- Donut Chart Rectangle -->
+    <div class="col-12 col-md-2">
+      <div class="card" onclick="showChart('donut')">
+        <div class="card-body text-center">
+          <h5 class="card-title">Donut Chart</h5>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scatter Chart Rectangle -->
+    <div class="col-12 col-md-2">
+      <div class="card" onclick="showChart('scatter')">
+        <div class="card-body text-center">
+          <h5 class="card-title">Scatter Chart</h5>
+        </div>
+      </div>
+    </div>
+
+    <!-- Radar Chart Rectangle -->
+    <div class="col-12 col-md-2">
+      <div class="card" onclick="showChart('radar')">
+        <div class="card-body text-center">
+          <h5 class="card-title">Radar Chart</h5>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Large Box for Chart Display -->
+  <div class="mt-4">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title text-center">Selected Chart</h5>
+        <div id="chartContainer" class="text-center">
+          <p class="text-muted">Select a chart to view it here.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // JavaScript function to update the large chart box based on selection
+  function showChart(chartType) {
+    const chartContainer = document.getElementById('chartContainer');
+    chartContainer.innerHTML = ''; // Clear the current chart
+    
+    switch (chartType) {
+      case 'bar':
+        {% if bar_chart %}
+        chartContainer.innerHTML = '<img src="data:image/png;base64,{{ bar_chart }}" alt="Bar chart" class="img-fluid" />';
+        {% else %}
+        chartContainer.innerHTML = '<p class="text-center text-muted">No data available for Bar Chart.</p>';
+        {% endif %}
+        break;
+      case 'pie':
+        {% if pie_chart %}
+        chartContainer.innerHTML = '<img src="data:image/png;base64,{{ pie_chart }}" alt="Pie chart" class="img-fluid" />';
+        {% else %}
+        chartContainer.innerHTML = '<p class="text-center text-muted">No data available for Pie Chart.</p>';
+        {% endif %}
+        break;
+      case 'line':
+        {% if line_chart %}
+        chartContainer.innerHTML = '<img src="data:image/png;base64,{{ line_chart }}" alt="Line chart" class="img-fluid" />';
+        {% else %}
+        chartContainer.innerHTML = '<p class="text-center text-muted">No data available for Line Chart.</p>';
+        {% endif %}
+        break;
+      case 'donut':
+        {% if donut_chart %}
+        chartContainer.innerHTML = '<img src="data:image/png;base64,{{ donut_chart }}" alt="Donut chart" class="img-fluid" />';
+        {% else %}
+        chartContainer.innerHTML = '<p class="text-center text-muted">No data available for Donut Chart.</p>';
+        {% endif %}
+        break;
+      case 'scatter':
+        {% if scatter_chart %}
+        chartContainer.innerHTML = '<img src="data:image/png;base64,{{ scatter_chart }}" alt="Scatter chart" class="img-fluid" />';
+        {% else %}
+        chartContainer.innerHTML = '<p class="text-center text-muted">No data available for Scatter Chart.</p>';
+        {% endif %}
+        break;
+      case 'radar':
+        {% if radar_chart %}
+        chartContainer.innerHTML = '<img src="data:image/png;base64,{{ radar_chart }}" alt="Radar chart" class="img-fluid" />';
+        {% else %}
+        chartContainer.innerHTML = '<p class="text-center text-muted">No data available for Radar Chart.</p>';
+        {% endif %}
+        break;
+      default:
+        chartContainer.innerHTML = '<p class="text-muted">Select a chart to view it here.</p>';
+    }
+  }
+</script>
+
+{% endblock %}

@@ -19,6 +19,10 @@ from . import utils
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.utils import timezone
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+import pdfkit
+
 # Create your views here.
 
 @login_required
@@ -195,9 +199,9 @@ def upload_image(request):
         form = ImageUploadForm()
 
     return render(request, 'calorie/upload_image.html', {'form': form})
-
 def generate_chart(chart_type, labels, values, **kwargs):
     plt.figure()
+
     if chart_type == "bar":
         plt.bar(labels, values, color=kwargs.get("colors", "blue"))
         plt.title(kwargs.get("title", "Bar Chart"))
@@ -211,6 +215,29 @@ def generate_chart(chart_type, labels, values, **kwargs):
         wedges, texts, autotexts = plt.pie(values, labels=labels, autopct='%1.1f%%', startangle=90, colors=kwargs.get("colors"))
         plt.gca().add_artist(plt.Circle((0, 0), 0.70, fc='white'))
         plt.title(kwargs.get("title", "Donut Chart"))
+    elif chart_type == "scatter":
+        x = np.arange(len(labels))
+        plt.scatter(x, values, color=kwargs.get("color", "blue"), alpha=0.7)
+        plt.xticks(x, labels, rotation=45)
+        plt.title(kwargs.get("title", "Scatter Plot"))
+    elif chart_type == "radar":  # Add radar chart condition
+        # Number of variables
+        num_vars = len(labels)
+
+        # Compute angle of each axis
+        angles = np.linspace(0, 2 * np.pi, num_vars, endpoint=False).tolist()
+
+        # Make the radar chart a circular plot
+        values += values[:1]  # to close the loop
+        angles += angles[:1]
+
+        fig, ax = plt.subplots(figsize=(6, 6), subplot_kw=dict(polar=True))
+        ax.fill(angles, values, color=kwargs.get("color", "blue"), alpha=0.25)
+        ax.plot(angles, values, color=kwargs.get("color", "blue"), linewidth=2)
+        ax.set_yticklabels([])  # Hide the radial labels
+        ax.set_xticks(angles[:-1])
+        ax.set_xticklabels(labels, fontsize=10)
+        plt.title(kwargs.get("title", "Radar Chart"))
 
     buffer = io.BytesIO()
     plt.savefig(buffer, format="png")
@@ -229,43 +256,37 @@ def handle_large_image(image_path, max_size=(1024, 1024)):
 
 
 def meal_detail(request):
-    # Fetch the latest NutritionData object
     data = NutritionData.objects.filter(user=request.user).last()
     if not data:
+        request.session['visualization_available'] = False
         messages.error(request, "No nutrition data available.")
         return redirect("upload_image")
 
-    # Labels and values
     labels = ['Calories', 'Protein', 'Carbs', 'Fats', 'Cholesterol', 'Iron', 'Calcium', 'Sodium', 'Magnesium']
     raw_values = [
         data.calories, data.protein, data.carbs, data.fats, data.cholestrol,
         data.iron, data.calcium, data.sodium, data.magnesium
     ]
 
-    # Replace None, NaN, or any invalid values with 0 and ensure values are valid floats
-    values = []
-    for val in raw_values:
-        if val is None or (isinstance(val, float) and np.isnan(val)):
-            values.append(0)
-        else:
-            values.append(float(val))  # Ensure it's a float value
+    values = [float(val) if val is not None else 0 for val in raw_values]
 
-    # Debug: Log values before charting
-    print("Debug - Processed Chart Values:", values)
-
-    # Check for any zeros or NaNs in the values before chart generation
-    # If any value is zero, we will set it to a small value (e.g., 1) to avoid division by zero
-    safe_values = [1e-6 if val == 0 or np.isnan(val) else val for val in values]
-
-    # Generate charts with safe values
+    # Check if there is sufficient data to enable visualization
+    if any(values):
+        request.session['visualization_available'] = True
+    else:
+        request.session['visualization_available'] = False
+        messages.info(request, "Insufficient data for visualization.")
+        return redirect("upload_image")
     try:
-        bar_chart = generate_chart("bar", labels, safe_values, colors=['red', 'blue', 'green', 'orange', 'pink', 'yellow', 'purple', 'violet'], title="Nutrition Overview - Bar Chart")
-        pie_chart = generate_chart("pie", labels, safe_values, colors=['red', 'blue', 'green', 'orange', 'pink', 'yellow', 'purple', 'violet'], title="Nutrition Overview - Pie Chart")
-        line_chart = generate_chart("line", labels, safe_values, color='blue', title="Nutrition Overview - Line Chart")
-        donut_chart = generate_chart("donut", labels, safe_values, colors=['red', 'blue', 'green', 'orange', 'pink', 'yellow', 'purple', 'violet'], title="Nutrition Overview - Donut Chart")
+        bar_chart = generate_chart("bar", labels, values, colors=['red', 'blue', 'green', 'orange', 'pink', 'yellow', 'purple', 'violet'], title="Nutrition Overview - Bar Chart")
+        pie_chart = generate_chart("pie", labels, values, colors=['red', 'blue', 'green', 'orange', 'pink', 'yellow', 'purple', 'violet'], title="Nutrition Overview - Pie Chart")
+        line_chart = generate_chart("line", labels, values, color='blue', title="Nutrition Overview - Line Chart")
+        donut_chart = generate_chart("donut", labels, values, colors=['red', 'blue', 'green', 'orange', 'pink', 'yellow', 'purple', 'violet'], title="Nutrition Overview - Donut Chart")
+        scatter_chart = generate_chart("scatter", labels, values, color='green', title="Nutrition Overview - Scatter Plot")
+        radar_chart = generate_chart("radar", labels, values, color='blue', title="Nutrition Overview - Radar Chart")  # Radar chart generation
     except Exception as e:
         print("Error during chart generation:", str(e))
-        messages.info(request, "Error generating charts.")
+        messages.error(request, "Error generating charts.")
         return redirect("upload_image")
 
     return render(request, "calorie/meal_detail.html", {
@@ -273,7 +294,52 @@ def meal_detail(request):
         "bar_chart": bar_chart,
         "pie_chart": pie_chart,
         "line_chart": line_chart,
-        "donut_chart": donut_chart
+        "donut_chart": donut_chart,
+        "scatter_chart":scatter_chart,
+        "radar_chart": radar_chart,
+    })
+def visualization(request):
+    # Check if visualization is available
+    if not request.session.get('visualization_available', False):
+        messages.error(request, "Visualization is not available.")
+        return redirect("home")
+
+    # Fetch the latest NutritionData object
+    data = NutritionData.objects.filter(user=request.user).last()
+    if not data:
+        messages.error(request, "No nutrition data available.")
+        return redirect("home")
+
+    labels = ['Calories', 'Protein', 'Carbs', 'Fats', 'Cholesterol', 'Iron', 'Calcium', 'Sodium', 'Magnesium']
+    raw_values = [
+        data.calories, data.protein, data.carbs, data.fats, data.cholestrol,
+        data.iron, data.calcium, data.sodium, data.magnesium
+    ]
+
+    # Prepare values for chart generation
+    values = [float(val) if val is not None else 0 for val in raw_values]
+
+    try:
+        # Generate charts
+        bar_chart = generate_chart("bar", labels, values, colors=['red', 'blue', 'green', 'orange', 'pink', 'yellow', 'purple', 'violet'], title="Nutrition Overview - Bar Chart")
+        pie_chart = generate_chart("pie", labels, values, colors=['red', 'blue', 'green', 'orange', 'pink', 'yellow', 'purple', 'violet'], title="Nutrition Overview - Pie Chart")
+        line_chart = generate_chart("line", labels, values, color='blue', title="Nutrition Overview - Line Chart")
+        donut_chart = generate_chart("donut", labels, values, colors=['red', 'blue', 'green', 'orange', 'pink', 'yellow', 'purple', 'violet'], title="Nutrition Overview - Donut Chart")
+        scatter_chart = generate_chart("scatter", labels, values, color='green', title="Nutrition Overview - Scatter Plot")
+        radar_chart = generate_chart("radar", labels, values, color='blue', title="Nutrition Overview - Radar Chart")  # Radar chart generation
+    except Exception as e:
+        print("Error during chart generation:", str(e))
+        messages.error(request, "Error generating charts.")
+        return redirect("home")
+
+    return render(request, "calorie/visualization.html", {
+        "data": data,
+        "bar_chart": bar_chart,
+        "pie_chart": pie_chart,
+        "line_chart": line_chart,
+        "donut_chart": donut_chart,
+        "scatter_chart":scatter_chart,
+        "radar_chart": radar_chart
     })
 
 
@@ -284,3 +350,59 @@ def profile(request):
     """
     return render(request, 'calorie/profile.html', {'user': request.user})
 
+def generate_report(request, format='pdf'):
+    user = request.user
+    
+    # Fetch user details
+    user_details = {
+        "name": user.username,
+        "email": user.email,
+    }
+    
+    # Fetch user's daily goal
+    daily_goal = DailyGoal.objects.filter(user=user).first()
+    
+    # Fetch user's nutritional data
+    nutrition_data = NutritionData.objects.filter(user=user).all()
+
+    # Prepare additional context for the report
+    report_context = {
+        "user_details": user_details,
+        "daily_goal": daily_goal,
+        "nutrition_data": nutrition_data,
+    }
+
+    if format == 'pdf':
+        # Ensure correct wkhtmltopdf path
+        wkhtmltopdf_path = r'C:\Users\11ana\Downloads\wkhtmltox-0.12.6-1.mxe-cross-win64\wkhtmltox\bin\wkhtmltopdf.exe'
+        config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
+
+        # Render HTML template with the user data, daily goals, and nutrition data
+        html = render_to_string('calorie/generate_report.html', report_context)
+
+        # Convert HTML to PDF
+        pdf = pdfkit.from_string(html, False, configuration=config)
+
+        response = HttpResponse(pdf, content_type='application/pdf')
+        response['Content-Disposition'] = 'inline; filename="nutrition_report.pdf"'
+        return response
+    else:
+        return HttpResponse("Invalid format", status=400)
+
+
+
+def generate_pdf(user_details, nutrition_data):
+    html_content = render_to_string('calorie/generate_report.html', {
+        "user_details": user_details,
+        "nutrition_data": nutrition_data
+    })
+
+    pdf_options = {
+        "page-size": "A4",
+        "encoding": "UTF-8",
+    }
+    pdf = pdfkit.from_string(html_content, False, options=pdf_options)
+
+    response = HttpResponse(pdf, content_type="application/pdf")
+    response["Content-Disposition"] = 'attachment; filename="nutrition_report.pdf"'
+    return response

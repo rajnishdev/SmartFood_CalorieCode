@@ -20,7 +20,7 @@
 /* Left Section */
 .left-section {
   flex: 1;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(215, 162, 108, 0.1);
   backdrop-filter: blur(5px);
   color: white;
   padding: 6rem 2rem;
@@ -40,7 +40,7 @@
   display: flex;
   gap: 20px;
   padding: 40px;
-  background: rgba(255, 255, 255, 0.1);
+  background:rgba(215, 162, 108, 0.1);
   backdrop-filter: blur(5px);
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -116,9 +116,9 @@
   background: linear-gradient(135deg, #0d6efd, #6610f2);
   color: white;
   font-size: 20px;
-  border-radius: 50%;
-  width: 150px;
-  height: 150px;
+  border-radius: 60%;
+  width: 135px;
+  height: 135px;
   text-decoration: none;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: transform 0.2s, box-shadow 0.2s;
