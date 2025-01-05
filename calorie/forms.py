@@ -1,5 +1,6 @@
 from django import forms
 from .models import DailyGoal, Image
+from django.contrib.auth.models import User
 
 class DailyGoalForm(forms.ModelForm):
     class Meta:
@@ -31,11 +32,9 @@ class ImageUploadForm(forms.ModelForm):
     class Meta:
         model = Image
         fields = ['image']
+    
 
-    def clean_image(self):
-        image = self.cleaned_data.get('image')
-        max_file_size = 10 * 1024 * 1024  # 10 MB
-
-        if image.size > max_file_size:
-            raise forms.ValidationError("Image file size exceeds 10 MB limit.")
-        return image
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ["first_name", "last_name"]

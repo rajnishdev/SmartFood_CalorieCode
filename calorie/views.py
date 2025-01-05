@@ -12,7 +12,7 @@ from django.shortcuts import render, redirect
 from django.urls import path
 from django.contrib.auth.decorators import login_required
 from .models import DailyGoal, Image, NutritionData
-from .forms import DailyGoalForm, ImageUploadForm
+from .forms import DailyGoalForm, ImageUploadForm, UserProfileForm
 from django.shortcuts import get_object_or_404
 from transformers import ViTImageProcessor, ViTForImageClassification
 from PIL import Image as PilImage
@@ -346,9 +346,16 @@ def visualization(request):
 
 @login_required
 def profile(request):
-    """
-    View for the user's profile page.
-    """
+    if request.method == "POST":
+        form = UserProfileForm(request.POST, instance=request.user)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your profile has been updated")
+            return redirect("profile")
+    else:
+        form = UserProfileForm()
+
     return render(request, 'calorie/profile.html', {'user': request.user})
 
 def generate_report(request, format='pdf'):

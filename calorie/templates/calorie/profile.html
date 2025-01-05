@@ -6,6 +6,14 @@
     <div class="card mt-4">
         <div class="card-body">
             <h5 class="card-title">User Details</h5>
+            {% if messages %}
+            {% for message in messages%}
+            <div class="alert alert-success alert-dismissible fade show" role="alert" style="background-color: green; color: white;">
+                <strong>{{message}}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
             <form method="POST" action="#">
                 {% csrf_token %}
                 <ul class="list-group list-group-flush">
@@ -18,15 +26,13 @@
                     <!-- Editable First Name -->
                     <li class="list-group-item">
                         <strong>First Name:</strong> 
-                        <input type="text" class="form-control d-inline-block" name="first_name" value="{{ user.first_name }}" style="width: auto;">
-                        <button type="button" class="btn btn-warning btn-sm ms-2" onclick="enableEdit('first_name')">Edit</button>
+                        <input type="text" class="form-control d-inline-block" name="first_name" value="{{ user.first_name }}" style="width: auto;">      
                     </li>
 
                     <!-- Editable Last Name -->
                     <li class="list-group-item">
                         <strong>Last Name:</strong> 
                         <input type="text" class="form-control d-inline-block" name="last_name" value="{{ user.last_name }}" style="width: auto;">
-                        <button type="button" class="btn btn-warning btn-sm ms-2" onclick="enableEdit('last_name')">Edit</button>
                     </li>
                 </ul>
 
