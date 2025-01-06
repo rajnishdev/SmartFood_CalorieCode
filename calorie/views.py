@@ -23,6 +23,7 @@ from django.utils import timezone
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 import pdfkit
+from django.db.models import Sum
 
 # Create your views here.
 
@@ -193,8 +194,23 @@ def upload_image(request):
             zinc = nutrition_data["zinc"]
             vitaminb12 = nutrition_data["vitaminb12"]
             folic_acid = nutrition_data["folic_acid"]
-
+            
             NutritionData.objects.create(user=request.user, image=image_instance, class_name=class_name, calories=calories, protein=protein, carbs=carbs, fats=fats,cholestrol=cholestrol, iron=iron, calcium=calcium, sodium=sodium, magnesium=magnesium, phosphorus=phosphorus,zinc=zinc,vitaminb12=vitaminb12, folic_acid=folic_acid )
+            
+            # Fetch the daily goal for the user
+            daily_goals = DailyGoal.objects.filter(user=request.user)
+            goal = daily_goals.first().calories if daily_goals.exists() else 0
+
+            # Fetch the nutrition data and calculate the total calories
+            nutrition_data = NutritionData.objects.filter(user=request.user)
+            total_calories = nutrition_data.aggregate(total=Sum('calories'))['total'] or 0
+            
+        
+            if goal <= total_calories:
+                messages.error(request, "Your Daily goal is achieved!")
+            else:
+                messages.success(request, f"You need {goal - total_calories} more calories to achieve your daily goal")
+            
             return redirect('meal_detail')
     else:
         form = ImageUploadForm()
